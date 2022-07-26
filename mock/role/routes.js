@@ -217,6 +217,24 @@ const asyncRoutes = [
     ]
   },
   {
+    path: '/ProductManage',
+    component: 'layout/Layout',
+    redirect: 'noRedirect',
+    name: 'ProductManage',
+    meta: {
+      title: 'ProductManage',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'BaseProductManage',
+        component: 'views/ProductManage/BaseProductManage/BaseProductManage.vue',
+        name: 'KeyboardChart',
+        meta: { title: 'BaseProductManaget', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/charts',
     component: 'layout/Layout',
     redirect: 'noRedirect',
@@ -230,7 +248,7 @@ const asyncRoutes = [
         path: 'keyboard',
         component: 'views/charts/keyboard',
         name: 'KeyboardChart',
-        meta: { title: 'Keyboard Chart', noCache: true }
+        meta: { title: 'Keyboard Chart2', noCache: true }
       },
       {
         path: 'line',

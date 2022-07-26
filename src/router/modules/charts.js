@@ -16,7 +16,7 @@ const chartsRouter = {
       path: 'keyboard',
       component: () => import('@/views/charts/keyboard'),
       name: 'KeyboardChart',
-      meta: { title: 'Keyboard Chart', noCache: true }
+      meta: { title: 'Keyboard Chart2', noCache: true }
     },
     {
       path: 'line',
