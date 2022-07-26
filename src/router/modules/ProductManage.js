@@ -19,6 +19,13 @@ const ProductManageRouter = {
       meta: { title: '基础产品管理', noCache: true }
     },
     {
+      path: 'BaseProductAdd',
+      // hidden: true,
+      component: () => import('@/views/ProductManage/BaseProductAdd/BaseProductAdd'),
+      name: 'BaseProductManage',
+      meta: { title: '基础产品新增', noCache: true }
+    },
+    {
       path: 'SalesProductManage',
       component: () => import('@/views/ProductManage/SalesProductManage/SalesProductManage'),
       name: 'BaseProductManage',
