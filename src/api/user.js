@@ -1,10 +1,14 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login({ username, password }) {
+  const passwordParam = {
+    password,
+    username
+  }
   return request({
-    url: '/vue-element-admin/user/login',
+    url: 'https://dev.defenderfintech.com/smile-api/auth-api/auth/pwd/login',
     method: 'post',
-    data
+    passwordParam,
   })
 }
 

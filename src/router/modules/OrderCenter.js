@@ -16,14 +16,21 @@ const OrderCenterRouter = {
       path: 'OrderManage',
       component: () => import('@/views/OrderCenter/OrderManage/OrderManage'),
       name: 'BaseProductManage',
-      meta: { title: '基础产品管理', noCache: true }
+      meta: { title: '订单管理', noCache: true }
     },
     {
       path: 'VerificationOrderManage',
       component: () => import('@/views/OrderCenter/VerificationOrderManage/VerificationOrderManage'),
       name: 'BaseProductManage',
-      meta: { title: '销售产品管理', noCache: true }
-    }
+      meta: { title: '核销单管理', noCache: true }
+    },
+    {
+      path: 'VerificationOrderDetail',
+      // hidden: true,
+      component: () => import('@/views/OrderCenter/VerificationOrderDetail/VerificationOrderDetail'),
+      name: 'BaseProductManage',
+      meta: { title: '核销单明细', noCache: true }
+    },
   ]
 }
 

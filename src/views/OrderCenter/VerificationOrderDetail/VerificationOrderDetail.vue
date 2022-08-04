@@ -1,5 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container">2222
+    <el-descriptions title="用户信息">
+      <el-descriptions-item label="用户名">kooriookami</el-descriptions-item>
+      <el-descriptions-item label="手机号">181000s00000</el-descriptions-item>
+      <el-descriptions-item label="居住地">苏州市</el-descriptions-item>
+      <el-descriptions-item label="备注">
+        <el-tag size="small">学校</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="联系地址">江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item>
+    </el-descriptions>
     <div class="form-container">
       <el-form ref="form" :model="form" label-width="80px">
         <el-row :gutter="100">
@@ -93,7 +102,7 @@
 
 <script>
 export default {
-  name: 'VerificationOrderManage', // 核销单管理
+  name: 'VerificationOrderDetail', // 核销单明细
   data() {
     return {
       form: {
