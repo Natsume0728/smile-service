@@ -59,18 +59,20 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="productId" label="产品编码"></el-table-column>
-        <el-table-column prop="productName" label="产品名称"></el-table-column>
-        <el-table-column prop="levelOneClassify" label="一级产品分类"></el-table-column>
-        <el-table-column prop="levelTwoClassify" label="二级产品分类"></el-table-column>
-        <el-table-column prop="date" label="结算方式"></el-table-column>
-        <el-table-column prop="productStatu" label="产品状态"></el-table-column>
-        <el-table-column prop="date" label="可售状态"></el-table-column>
-        <el-table-column label="时间" width="190">
-          <template slot-scope="{ row: { onlineTime, editTime } }">
+        <el-table-column prop="skuNo" label="产品编码"></el-table-column>
+        <el-table-column prop="skuName" label="产品名称"></el-table-column>
+        <el-table-column prop="categoryName" label="商品品类"></el-table-column>
+        <el-table-column prop="" label="结算方式（待确定）"></el-table-column>
+        <el-table-column label="销售状态">
+          <template slot-scope="{ row: { sellState } }">
+            <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="时间" width="220">
+          <template slot-scope="{ row: { createTime, updateTime } }">
             <div>
-              <div>上线时间: {{ onlineTime }}</div>
-              <div>修改时间: {{ editTime }}</div>
+              <div>上线时间: {{ createTime || '--' }}</div>
+              <div>修改时间: {{ updateTime || '--' }}</div>
             </div>
           </template>
         </el-table-column>
@@ -86,11 +88,11 @@
 
       <div class="pagination-container">
         <el-pagination
-          :current-page="currentPage"
+          :current-page="pageIndex"
           :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="total"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
@@ -101,6 +103,7 @@
 </template>
 
 <script>
+import request from '@/utils/request'
 export default {
   name: 'BaseProductManage', // 基础产品管理
   data() {
@@ -112,39 +115,31 @@ export default {
         levelOneClassify: '',
         levelTwoClassify: '',
       },
-      tableData: [
-        {
-          productId: '23145021',
-          productName: '洗车服务',
-          productStatu: '上架',
-          levelOneClassify: '车辆服务',
-          levelTwoClassify: '美容洗护',
-          onlineTime: '2021年12月31日',
-          editTime: '2021年12月31日',
-        },
-        {
-          productId: '23145021',
-          productName: '洗车服务',
-          productStatu: '上架',
-          levelOneClassify: '车辆服务',
-          levelTwoClassify: '美容洗护',
-          onlineTime: '2021年12月31日',
-          editTime: '2021年12月31日',
-        },
-        {
-          productId: '23145021',
-          productName: '洗车服务',
-          productStatu: '上架',
-          levelOneClassify: '车辆服务',
-          levelTwoClassify: '美容洗护',
-          onlineTime: '2021年12月31日',
-          editTime: '2021年12月31日',
-        },
-      ],
-      currentPage: 1,
+      tableData: [],
+      total: 0,
+      pageIndex: 1,
+      pageSize: 10,
     }
   },
+  mounted() {
+    this.getGoodsSku()
+  },
   methods: {
+
+    async getGoodsSku() {
+      const { data } = await request({
+        method: 'post',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
+        data: {
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+        }
+      })
+      const { list, total } = data
+      this.tableData = list
+      this.total = total
+      console.log('list', list)
+    },
     search() {
       console.log('search!')
     },

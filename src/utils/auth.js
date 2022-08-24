@@ -1,9 +1,11 @@
 import Cookies from 'js-cookie'
-
+import store from '@/store'
 const TokenKey = 'Admin-Token'
 
 export function getToken() {
-  return Cookies.get(TokenKey)
+  // return Cookies.get(TokenKey)
+  console.log('store', store?.state?.user?.token)
+  return store?.state?.user?.token
 }
 
 export function setToken(token) {

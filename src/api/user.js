@@ -1,14 +1,13 @@
 import request from '@/utils/request'
 
-export function login({ username, password }) {
-  const passwordParam = {
-    password,
-    username
-  }
+export function login(data) {
   return request({
     url: 'https://dev.defenderfintech.com/smile-api/auth-api/auth/pwd/login',
     method: 'post',
-    passwordParam,
+    headers: {
+      'content-Type': 'application/json'
+    },
+    data
   })
 }
 

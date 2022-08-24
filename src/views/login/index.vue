@@ -70,6 +70,9 @@
       <br>
       <social-sign />
     </el-dialog>
+    <!-- <slide-verify ref="slideblock" :slider-text="text" :accuracy="accuracy" @again="onAgain" @fulfilled="onFulfilled" @success="onSuccess" @fail="onFail" @refresh="onRefresh"></slide-verify>
+    <button @click="handleClick">在父组件可以点我刷新哦</button>
+    <div>{{ msg }}</div> -->
   </div>
 </template>
 
@@ -96,9 +99,13 @@ export default {
       }
     }
     return {
+      msg: '',
+      text: '向右滑动->',
+      // 精确度小，可允许的误差范围小；为1时，则表示滑块要与凹槽完全重叠，才能验证成功。默认值为5
+      accuracy: 5,
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -138,6 +145,30 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    onSuccess(times) {
+      console.log('验证通过，耗时' + times + '毫秒')
+      this.msg = `login success, 耗时${(times / 1000).toFixed(1)}s`
+    },
+    onFail() {
+      console.log('验证不通过')
+      this.msg = ''
+    },
+    onRefresh() {
+      console.log('点击了刷新小图标')
+      this.msg = ''
+    },
+    onFulfilled() {
+      console.log('刷新成功啦！')
+    },
+    onAgain() {
+      console.log('检测到非人为操作的哦！')
+      this.msg = 'try again'
+      // 刷新
+      this.$refs.slideblock.reset()
+    },
+    handleClick() {
+      this.$refs.slideblock.reset()
+    },
     checkCapslock(e) {
       const { key } = e
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')

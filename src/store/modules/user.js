@@ -1,6 +1,7 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import md5 from 'md5'
 
 const state = {
   token: getToken(),
@@ -33,10 +34,11 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+      login({ username: username.trim(), password: md5(password) }).then(response => {
+        console.log('response', response)
+        const { data, token } = response
+        commit('SET_TOKEN', token)
+        // setToken(data.token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -48,6 +50,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
+        console.log('responsegetInfo', response)
         const { data } = response
 
         if (!data) {
@@ -67,6 +70,7 @@ const actions = {
         commit('SET_INTRODUCTION', introduction)
         resolve(data)
       }).catch(error => {
+        console.log('errror', error)
         reject(error)
       })
     })
