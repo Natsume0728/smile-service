@@ -4,38 +4,38 @@
       <el-form ref="form" :model="form" label-width="80px">
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="产品编码">
-              <el-input v-model="form.skuNo" placeholder="请输入产品编码"></el-input>
+            <el-form-item label="商户别名">
+              <el-input v-model="form.merchantAlias" placeholder="请输入商户别名"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="产品名称" placeholder="请输入产品名称">
-              <el-input v-model="form.skuName"></el-input>
+            <el-form-item label="商户级别" placeholder="请输入商户级别">
+              <el-input v-model="form.merchantLevel"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="销售状态">
-              <el-select v-model="form.sellState" placeholder="请选择销售状态">
-                <el-option label="上架" value="1"></el-option>
-                <el-option label="下架" value="2"></el-option>
-              </el-select>
+            <el-form-item label="商户名称" placeholder="请输入商户名称">
+              <el-input v-model="form.merchantName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="商品品类">
-              <el-select v-model="form.categoryName" placeholder="请选择商品品类">
-                <el-option label="商品品类一" value="1"></el-option>
-                <el-option label="商品品类二" value="2"></el-option>
-              </el-select>
+            <el-form-item label="商户编号" placeholder="请输入商户编号">
+              <el-input v-model="form.merchantNo"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="有效状态" placeholder="请输入有效状态">
+              <el-input v-model="form.validSate"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="getMerchantList">查询</el-button>
               <el-button @click="reset">重置</el-button>
+              <el-button @click="add">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -51,29 +51,17 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="skuNo" label="产品编码"></el-table-column>
-        <el-table-column prop="skuName" label="产品名称"></el-table-column>
-        <el-table-column prop="categoryName" label="商品品类"></el-table-column>
-        <el-table-column prop="" label="结算方式（待确定）"></el-table-column>
-        <el-table-column label="销售状态">
-          <template slot-scope="{ row: { sellState } }">
-            <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column label="时间" width="220">
-          <template slot-scope="{ row: { createTime, updateTime } }">
-            <div>
-              <div>上线时间: {{ createTime || '--' }}</div>
-              <div>修改时间: {{ updateTime || '--' }}</div>
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column prop="merchantAlias" label="商户别名"></el-table-column>
+        <el-table-column prop="merchantLevel" label="商户级别"></el-table-column>
+        <el-table-column prop="merchantName" label="商户名称"></el-table-column>
+        <el-table-column prop="merchantNo" label="商户编号"></el-table-column>
+        <el-table-column prop="validSate" label="有效状态"></el-table-column>
         <el-table-column label="操作" width="180">
-          <template slot-scope="{ row: { id, sellState } }">
+          <template slot-scope="{ row: { validSate, id } }">
             <el-button type="text" @click="handleView(id, 'view')">查看</el-button>
             <el-button type="text" @click="handleEdit(id, 'edit')">编辑</el-button>
-            <el-button type="text" @click="editSellState(id, sellState === 1 ? 2 : 1)">{{ sellState === 1 ? '下架' : '上架' }}</el-button>
-            <el-button type="text">补券</el-button>
+            <el-button v-if="validSate === 1" type="text" @click="remove(id)">禁用</el-button>
+            <el-button v-if="validSate === 0" type="text" @click="renew(id)">启用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -102,10 +90,11 @@ export default {
   data() {
     return {
       form: {
-        skuNo: '',
-        skuName: '',
-        sellState: '',
-        categoryName: '',
+        merchantAlias: '',
+        merchantLevel: '',
+        merchantName: '',
+        merchantNo: '',
+        validState: '',
       },
       tableData: [],
       total: 0,
@@ -114,14 +103,39 @@ export default {
     }
   },
   mounted() {
-    this.getGoodsSku()
+    this.getMerchantList()
   },
   methods: {
+    add() {
+      this.$router.push({ name: 'MerchantAdd' })
+    },
+
     handleView(id, pageType) {
-      this.$router.push({ name: 'BaseProductAdd', params: { id, pageType }})
+      this.$router.push({ name: 'MerchantAdd', params: { id, pageType }})
     },
     handleEdit(id, pageType) {
-      this.$router.push({ name: 'BaseProductAdd', params: { id, pageType }})
+      this.$router.push({ name: 'MerchantAdd', params: { id, pageType }})
+    },
+
+    async remove(merchantId) {
+      const { data } = await request({
+        method: 'get',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/remove',
+        params: {
+          merchantId,
+        }
+      })
+      this.getMerchantList()
+    },
+    async renew(merchantId) {
+      const { data } = await request({
+        method: 'get',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/renew',
+        params: {
+          merchantId,
+        }
+      })
+      this.getMerchantList()
     },
 
     async editSellState(skuId, state) {
@@ -135,15 +149,16 @@ export default {
       })
     },
 
-    async getGoodsSku() {
+    async getMerchantList() {
       const { data } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/page',
         data: {
-          sellState: this.form.sellState || undefined,
-          skuNo: this.form.skuNo || undefined,
-          skuName: this.form.skuName || undefined,
-          categoryName: this.form.categoryName || undefined,
+          'merchantAlias': this.form.merchantAlias || undefined,
+          'merchantLevel': this.form.merchantLevel || undefined,
+          'merchantName': this.form.merchantName || undefined,
+          'merchantNo': this.form.merchantNo || undefined,
+          'validState': this.form.validState || undefined,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
         }

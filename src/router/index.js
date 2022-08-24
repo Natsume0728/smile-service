@@ -9,6 +9,7 @@ import Layout from '@/layout'
 /* Router Modules */
 import OrderCenter from './modules/OrderCenter'
 import ProductManage from './modules/ProductManage'
+import MerchantInfo from './modules/MerchantInfo'
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
@@ -131,6 +132,7 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  MerchantInfo,
   ProductManage,
   OrderCenter,
   {

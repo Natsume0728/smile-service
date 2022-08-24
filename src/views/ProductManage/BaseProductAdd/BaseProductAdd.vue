@@ -4,65 +4,41 @@
       <el-form ref="form" :model="form" label-width="auto">
         <div class="title">产品基础信息配置</div>
         <el-row :gutter="100">
-          <el-col :span="12">
-            <el-form-item label="产品编码" required>
-              <el-input v-model="form.productId" placeholder="请输入产品编码"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="产品名称" placeholder="请输入产品名称">
-              <el-input v-model="form.productName"></el-input>
+              <el-input v-model="form.skuName"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="品类名称" placeholder="请输入品类名称">
+              <el-input v-model="form.categoryName"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="品类编号" placeholder="请输入品类编号">
+              <el-input v-model="form.categoryNo"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="100">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-form-item label="对客展示名称">
-              <el-input v-model="form.showTitle" placeholder="请输入对客展示名称"></el-input>
+              <el-input v-model="form.appSkuName" placeholder="请输入对客展示名称"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="对客展示副标题" placeholder="请输入对客展示副标题">
-              <el-input v-model="form.showSubTitle"></el-input>
+          <el-col :span="8">
+            <el-form-item label="对客展示详情链接" placeholder="请输入对客展示详情链接">
+              <el-input v-model="form.appDetailUrl"></el-input>
             </el-form-item>
           </el-col>
-        </el-row>
-
-        <el-row :gutter="100">
-          <el-col :span="12">
-            <el-form-item label="一级分类">
-              <el-select v-model="form.levelOneClassify" placeholder="请选择一级分类">
-                <el-option label="一级分类一" value="1"></el-option>
-                <el-option label="一级分类二" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="二级分类">
-              <el-select v-model="form.levelTwoClassify" placeholder="请选择二级分类">
-                <el-option label="二级分类一" value="1"></el-option>
-                <el-option label="二级分类二" value="2"></el-option>
-              </el-select>
+          <el-col :span="8">
+            <el-form-item label="对客展示描述" placeholder="请输入对客展示描述">
+              <el-input v-model="form.appSkuDescription"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row :gutter="100">
-          <el-col :span="12">
-            <el-form-item label="服务内容">
-              <el-input v-model="form.serveContent" placeholder="请输入服务内容"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="上架状态">
-              <el-select v-model="form.productStatu" placeholder="请选择上架状态">
-                <el-option label="上架" value="1"></el-option>
-                <el-option label="下架" value="2"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
         <div class="title">结算设置</div>
         <el-row :gutter="100">
           <el-col :span="12">
@@ -94,8 +70,9 @@
           </el-col>
           <el-col :span="12">
             <el-form-item>
-              <el-button type="primary" @click="search"> 提交 </el-button>
-              <el-button @click="reset"> 取消 </el-button>
+              <el-button v-if="pageType === 'add'" type="primary" @click="add"> 新增 </el-button>
+              <el-button v-if="pageType === 'edit'" type="primary" @click="update"> 保存 </el-button>
+              <el-button v-if="pageType === 'add' || pageType === 'edit'" @click="reset"> 取消 </el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -135,17 +112,22 @@
 </template>
 
 <script>
+import request from '@/utils/request'
+
 export default {
   name: 'BaseProductAdd', // 基础产品新增
   data() {
     return {
+      skuId: null,
+      pageType: 'add',
       form: {
-        productId: '',
-        productName: '',
+        skuName: '',
+        appSkuName: '',
+        appDetailUrl: '',
+        appSkuDescription: '',
+        categoryName: '',
         showTitle: '',
         showSubTitle: '',
-        levelOneClassify: '',
-        levelTwoClassify: '',
         serveContent: '',
         productStatu: '',
         settlementMethod: '',
@@ -165,9 +147,58 @@ export default {
       currentPage: 1,
     }
   },
+  mounted() {
+    console.log(this.$route.params.id, 'id')
+    this.skuId = this.$route?.params?.id
+    this.pageType = this.$route?.params?.pageType
+    if (this.skuId) {
+      this.getGoodsSku(this.skuId)
+    }
+    this.userSelect()
+  },
   methods: {
-    search() {
-      console.log('search!')
+    async add() {
+      const { data } = await request({
+        method: 'POST',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/add',
+        data: {
+          'appSkuDescription': this.form.appSkuDescription,
+          'appSkuName': this.form.appSkuName,
+          'appDetailUrl': this.form.appDetailUrl,
+          'categoryName': this.form.categoryName,
+          'categoryNo': this.form.categoryNo,
+          'skuName': this.form.skuName,
+        }
+      })
+    },
+    async update() {
+      const { data } = await request({
+        method: 'POST',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/update',
+        data: {
+          'appSkuDescription': this.form.appSkuDescription,
+          'appSkuName': this.form.appSkuName,
+          'appDetailUrl': this.form.appDetailUrl,
+          'categoryName': this.form.categoryName,
+          'categoryNo': this.form.categoryNo,
+          'skuName': this.form.skuName,
+          'skuId': this.skuId,
+        }
+      })
+    },
+    async userSelect() {
+      const { data } = await request({
+        method: 'GET',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/userSelect',
+      })
+    },
+    async getGoodsSku(skuId) {
+      const { data } = await request({
+        method: 'GET',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/get',
+        params: { skuId },
+      })
+      this.form = Object.assign(this.form, data)
     },
     reset() {
       console.log('reset!')
