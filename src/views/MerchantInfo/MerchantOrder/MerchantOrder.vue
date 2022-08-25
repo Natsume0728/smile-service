@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form-container">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" label-width="100px">
         <el-row :gutter="100">
           <el-col :span="8">
             <el-form-item label="发放状态">
@@ -38,7 +38,7 @@
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="merchantOrder">查询</el-button>
               <el-button @click="reset">重置</el-button>
-              <el-button @click="add">新增商户订单</el-button>
+              <el-button type="primary" @click="add">新增商户订单</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -47,6 +47,7 @@
     </div>
 
     <div class="table-container">
+      <h3>商户订单</h3>
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -63,11 +64,7 @@
         <el-table-column prop="merchantOrderNo" label="商户订单编号"></el-table-column>
         <el-table-column prop="orderState" label="订单状态">
           <template slot-scope="{ row: { orderState } }">
-            <div>{{ orderState === 1 ? '待审核' :
-              orderState === 2 ? '已取消' :
-              orderState === 3 ? '审核不通过' :
-              orderState === 4 ? '审核通过' : '--'
-            }}</div>
+            <div>{{ orderState | orderStateFilter }}</div>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="250">
@@ -103,115 +100,8 @@
 
       <el-drawer title="" :visible.sync="drawer" size="40%">
         <div class="form-container">
-          <el-form v-if="drawerType === 'view'" ref="form3" :model="form2" label-width="auto" label-position="left">
-            <div class="title">商户单信息</div>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="审核意见:">
-                  <div>{{ form2.auditRemark }}</div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="创建时间:">
-                  <div>{{ form2.creteTime }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="创建人:">
-                  <div>{{ form2.createUser }}</div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="订单权益发放份数:">
-                  <div>{{ form2.grantNum }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="实际权益发放份数:">
-                  <div>{{ form2.grantNumActual }}</div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="发放状态:">
-                  <div>{{ form2.grantState }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="权益发放实际时间:">
-                  <div>{{ form2.grantTimeActual }}</div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="权益发放时间:">
-                  <div>{{ form2.grantTimeBegin }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="商户订单id:">
-                  <div>{{ form2.id }}</div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="商户编号:">
-                  <div>{{ form2.merchantNo }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="商户订单编号:">
-                  <div>{{ form2.merchantOrderNo }}</div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="订单状态:">
-                  <div>{{ form2.orderState }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="权益发放后领取截止时间限制:">
-                  <div>{{ form2.receiveTimeLimit }}</div>
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="更新时间:">
-                  <div>{{ form2.updateTime }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="更新人:">
-                  <div>{{ form2.updateUser }}</div>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-form>
-
-          <el-form v-if="drawerType === 'add'" ref="form3" :model="form3" label-width="auto" label-position="left">
-            <div class="title">新增商户订单</div>
-            <el-form-item label="订单权益发放份数:">
-              <el-input v-model="form3.grantNum" placeholder="请输入订单权益发放份数"></el-input>
-            </el-form-item>
-            <el-form-item label="权益发放时间:">
-              <el-input v-model="form3.grantTimeBegin" placeholder="请输入权益发放时间 示例值(2022-09-19 00:00:00)"></el-input>
-            </el-form-item>
-            <el-form-item label="权益发放后领取截止时间限制:">
-              <el-input v-model="form3.receiveTimeLimit" placeholder="请输入权益发放后领取截止时间限制 示例值(2022-09-29 00:00:00)"></el-input>
-            </el-form-item>
-            <el-button type="primary" @click="addOrder">新增</el-button>
-          </el-form>
-
+          <DrawView v-if="drawerType === 'view'" :id="drawId" />
+          <DrawAdd v-if="drawerType === 'add'" />
         </div>
       </el-drawer>
     </div>
@@ -220,11 +110,27 @@
 
 <script>
 import request from '@/utils/request'
+import DrawView from './DrawView.vue'
+import DrawAdd from './DrawAdd.vue'
 
 export default {
   name: 'BaseProductManage', // 基础产品管理
+  filters: {
+    orderStateFilter(value) {
+      if (value === 1) return '待审核'
+      if (value === 2) return '已取消'
+      if (value === 3) return '审核不通过'
+      if (value === 4) return '审核通过'
+      return '--'
+    }
+  },
+  components: {
+    DrawView,
+    DrawAdd,
+  },
   data() {
     return {
+      drawId: null,
       drawerType: 'add',
       drawer: false,
       auditForm: {
@@ -242,28 +148,6 @@ export default {
         'pageSize': 10,
         total: 0,
       },
-      form2: {
-        auditRemark: '',
-        createTime: '',
-        createUser: '',
-        grantNum: '',
-        grantNumActual: '',
-        grantState: '',
-        grantTimeActual: '',
-        grantTimeBegin: '',
-        id: '',
-        merchantNo: '',
-        merchantOrderNo: '',
-        orderState: '',
-        receiveTimeLimit: '',
-        updateTime: '',
-        updateUser: '',
-      },
-      form3: {
-        grantNum: null,
-        grantTimeBegin: null,
-        receiveTimeLimit: null,
-      },
       tableData: [],
     }
   },
@@ -274,25 +158,8 @@ export default {
 
     openDraw(orderId) {
       this.drawerType = 'view'
+      this.drawId = orderId
       this.drawer = true
-      this.getOrder(orderId)
-    },
-
-    async addOrder() {
-      const { data } = await request({
-        method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/add',
-        data: this.form3,
-      })
-    },
-
-    async getOrder(orderId) {
-      const { data } = await request({
-        method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/get',
-        params: { orderId },
-      })
-      this.form2 = Object.assign(this.form2, data)
     },
 
     add() {
@@ -402,7 +269,7 @@ export default {
   }
   .table-container {
     margin-top: 25px;
-    padding: 80px 30px;
+    padding: 30px;
     .pagination-container {
       display: flex;
       justify-content: center;

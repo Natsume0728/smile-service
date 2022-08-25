@@ -18,12 +18,6 @@ const PurchasingOrderRouter = {
       name: 'PurchasingOrderList',
       meta: { title: '采购单列表', noCache: true }
     },
-    {
-      path: 'PurchasingOrderAdd',
-      component: () => import('@/views/PurchasingOrder/PurchasingOrderAdd/PurchasingOrderAdd'),
-      name: 'PurchasingOrderAdd',
-      meta: { title: '采购单新增', noCache: true }
-    },
   ]
 }
 

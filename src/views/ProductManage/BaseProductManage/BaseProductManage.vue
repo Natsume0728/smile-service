@@ -1,23 +1,23 @@
 <template>
   <div class="container">
     <div class="form-container">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" label-width="100px">
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="产品编码">
-              <el-input v-model="form.skuNo" placeholder="请输入产品编码"></el-input>
+            <el-form-item label="品类编号">
+              <el-input v-model="form.categoryNo" placeholder="品类编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="产品名称" placeholder="请输入产品名称">
-              <el-input v-model="form.skuName"></el-input>
+            <el-form-item label="品类编号">
+              <el-input v-model="form.skuName" placeholder="请输入品类编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="销售状态">
               <el-select v-model="form.sellState" placeholder="请选择销售状态">
-                <el-option label="上架" value="1"></el-option>
-                <el-option label="下架" value="2"></el-option>
+                <el-option label="上架" :value="1"></el-option>
+                <el-option label="下架" :value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -25,17 +25,15 @@
 
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="商品品类">
-              <el-select v-model="form.categoryName" placeholder="请选择商品品类">
-                <el-option label="商品品类一" value="1"></el-option>
-                <el-option label="商品品类二" value="2"></el-option>
-              </el-select>
+            <el-form-item label="标准sku编号">
+              <el-input v-model="form.skuNo" placeholder="请输入标准sku编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" @click="search">查询</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="refresh">查询</el-button>
               <el-button @click="reset">重置</el-button>
+              <el-button type="primary" @click="openDraw(id, 'add')">新增商品sku</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -44,6 +42,7 @@
     </div>
 
     <div class="table-container">
+      <h3>标准商品sku列表</h3>
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -51,10 +50,20 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="skuNo" label="产品编码"></el-table-column>
-        <el-table-column prop="skuName" label="产品名称"></el-table-column>
-        <el-table-column prop="categoryName" label="商品品类"></el-table-column>
-        <el-table-column prop="" label="结算方式（待确定）"></el-table-column>
+        <el-table-column prop="id" label="采购单商品id"></el-table-column>
+        <el-table-column prop="appDetailUrl" label="对客展示详情链接"></el-table-column>
+        <el-table-column prop="appSkuDescription" label="对客展示简单描述"></el-table-column>
+        <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
+        <el-table-column prop="categoryName" label="商品品类名称"></el-table-column>
+        <el-table-column prop="categoryNo" label="商品品类编号"></el-table-column>
+        <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
+        <el-table-column prop="skuName" label="商品名称"></el-table-column>
+        <el-table-column prop="skuNo" label="商品sku编号"></el-table-column>
+        <el-table-column label="创建人/更新人">
+          <template slot-scope="{ row: { createUser, updateUser } }">
+            <div>{{ createUser || '--' }}/{{ updateUser || '--'}}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="销售状态">
           <template slot-scope="{ row: { sellState } }">
             <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
@@ -70,10 +79,9 @@
         </el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="{ row: { id, sellState } }">
-            <el-button type="text" @click="handleView(id, 'view')">查看</el-button>
-            <el-button type="text" @click="handleEdit(id, 'edit')">编辑</el-button>
+            <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
+            <el-button type="text" @click="openDraw(id, 'edit')">编辑</el-button>
             <el-button type="text" @click="editSellState(id, sellState === 1 ? 2 : 1)">{{ sellState === 1 ? '下架' : '上架' }}</el-button>
-            <el-button type="text">补券</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -85,22 +93,40 @@
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @size-change="refresh"
+          @current-change="refresh"
         >
         </el-pagination>
       </div>
     </div>
+    <el-drawer title="" :visible.sync="drawer" size="40%">
+      <div class="form-container">
+        <DrawView v-if="drawerType === 'view'" :id="drawId" />
+        <DrawEdit v-if="drawerType === 'edit'" :id="drawId" @refresh="refresh" />
+        <DrawAdd v-if="drawerType === 'add'" @refresh="refresh" />
+      </div>
+    </el-drawer>
   </div>
 </template>
 
 <script>
 import request from '@/utils/request'
+import DrawView from './DrawView.vue'
+import DrawEdit from './DrawEdit.vue'
+import DrawAdd from './DrawAdd.vue'
 
 export default {
-  name: 'BaseProductManage', // 基础产品管理
+  name: 'BaseProductManage',
+  components: {
+    DrawView,
+    DrawAdd,
+    DrawEdit,
+  },
   data() {
     return {
+      drawerType: 'view',
+      drawId: null,
+      drawer: false,
       form: {
         skuNo: '',
         skuName: '',
@@ -117,15 +143,19 @@ export default {
     this.getGoodsSku()
   },
   methods: {
-    handleView(id, pageType) {
-      this.$router.push({ name: 'BaseProductAdd', params: { id, pageType }})
+    refresh() {
+      this.drawer = false
+      this.getGoodsSku()
     },
-    handleEdit(id, pageType) {
-      this.$router.push({ name: 'BaseProductAdd', params: { id, pageType }})
+
+    openDraw(orderId, drawerType) {
+      this.drawerType = drawerType
+      this.drawId = orderId || undefined
+      this.drawer = true
     },
 
     async editSellState(skuId, state) {
-      const { data } = await request({
+      const { code } = await request({
         method: 'get',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/editSellState',
         params: {
@@ -133,6 +163,7 @@ export default {
           state,
         }
       })
+      if (code === '0000') this.refresh()
     },
 
     async getGoodsSku() {
@@ -153,18 +184,16 @@ export default {
       this.total = total
     },
 
-    search() {
-      console.log('search!')
-    },
     reset() {
-      console.log('reset!')
+      this.form = {
+        skuNo: '',
+        skuName: '',
+        sellState: '',
+        categoryName: '',
+      }
+      this.refresh()
     },
-    handleSizeChange() {
-      console.log('handleSizeChange!')
-    },
-    handleCurrentChange() {
-      console.log('handleCurrentChange!')
-    },
+
   },
 }
 </script>
@@ -182,7 +211,7 @@ export default {
   }
   .table-container {
     margin-top: 25px;
-    padding: 80px 30px;
+    padding: 30px;
     .pagination-container {
       display: flex;
       justify-content: center;

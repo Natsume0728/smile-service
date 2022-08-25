@@ -19,12 +19,6 @@ const MerchantInfoRouter = {
       meta: { title: '商户信息', noCache: true }
     },
     {
-      path: 'MerchantAdd',
-      component: () => import('@/views/MerchantInfo/MerchantAdd/MerchantAdd'),
-      name: 'MerchantAdd',
-      meta: { title: '商户新增', noCache: true }
-    },
-    {
       path: 'MerchantOrder',
       component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrder'),
       name: 'MerchantOrder',

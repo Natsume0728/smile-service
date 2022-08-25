@@ -157,7 +157,7 @@ export default {
   }
   .table-container {
     margin-top: 25px;
-    padding: 80px 30px;
+    padding: 30px;
     .pagination-container {
       display: flex;
       justify-content: center;

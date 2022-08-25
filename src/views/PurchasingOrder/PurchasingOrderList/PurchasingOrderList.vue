@@ -9,8 +9,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="采购单状态">
-              <el-input v-model="form.orderState" placeholder="请输入采购单状态"></el-input>
+            <el-form-item label="供应商编号">
+              <el-input v-model="form.supplierNo" placeholder="请输入供应商编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -22,8 +22,16 @@
 
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="供应商编号">
-              <el-input v-model="form.supplierNo" placeholder="请输入供应商编号"></el-input>
+            <el-form-item label="采购单状态">
+              <el-select v-model="form.orderState" placeholder="请输入采购单状态">
+                <el-option label="待提交" :value="1"></el-option>
+                <el-option label="待审核" :value="2"></el-option>
+                <el-option label="取消" :value="3"></el-option>
+                <el-option label="审核不通过" :value="4"></el-option>
+                <el-option label="审核通过" :value="5"></el-option>
+                <el-option label="已到货" :value="6"></el-option>
+                <el-option label="已结单" :value="7"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="16">
@@ -39,6 +47,7 @@
     </div>
 
     <div class="table-container">
+      <h3>采购单列表</h3>
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -46,26 +55,29 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="operationSign" label="运营标记信息"></el-table-column>
-        <el-table-column prop="purchaseNo" label="采购单编号"></el-table-column>
-        <el-table-column prop="purchaseState" label="采购状态"></el-table-column>
-        <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="supplierNo" label="供应商编号"></el-table-column>
+        <el-table-column prop="purchaseNo" label="采购单编号"></el-table-column>
+        <el-table-column prop="operationSign" label="运营标记信息"></el-table-column>
+        <el-table-column prop="purchaseState" label="采购状态">
+          <template slot-scope="{ row: { purchaseState } }">
+            {{ purchaseState | purchaseStateFilter }}
+          </template>
+        </el-table-column>
         <el-table-column prop="totalCostPrice" label="采购成本总金额"></el-table-column>
         <el-table-column prop="totalNum" label="采购商品总数"></el-table-column>
         <el-table-column prop="totalPrice" label="采购商品总金额"></el-table-column>
-        <el-table-column prop="supplierNo" label="供应商编号"></el-table-column>
-        <el-table-column prop="createUser" label="创建人"></el-table-column>
-        <el-table-column prop="updateUser" label="更新人"></el-table-column>
-
-        <el-table-column label="时间" width="220">
-          <template slot-scope="{ row: { createTime, updateTime } }">
-            <div>
-              <div>上线时间: {{ createTime || '--' }}</div>
-              <div>修改时间: {{ updateTime || '--' }}</div>
-            </div>
+        <el-table-column label="创建人/更新人" width="110">
+          <template slot-scope="{ row: { createUser, updateUser } }">
+            <div>{{ createUser || '--' }} / {{ updateUser || '--' }}</div>
           </template>
         </el-table-column>
+        <el-table-column label="时间" width="220">
+          <template slot-scope="{ row: { createTime, updateTime } }">
+            <div>上线时间: {{ createTime || '--' }}</div>
+            <div>修改时间: {{ updateTime || '--' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作" width="180">
           <template slot-scope="{ row: { id } }">
             <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
@@ -96,169 +108,10 @@
       </span>
     </el-dialog>
 
-    <el-drawer title="" :visible.sync="drawer" size="40%">
-      <div class="form-container">
-        <el-form v-if="drawerType === 'view'" ref="form3" :model="form2" label-width="auto" label-position="left">
-          <div class="title">采购单信息</div>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="创建人:">
-                <div>{{ form2.createUser }}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="创建时间:">
-                <div>{{ form2.creteTime }}</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="采购单ID:">
-                <div>{{ form2.id }}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="运营标记信息:">
-                <div>{{ form2.operationSign }}</div>
-                <el-input v-if="drawerType === 'add'" v-model="form2.operationSign"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="采购单编号:">
-                <div>{{ form2.purchaseNo }}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="采购状态:">
-                <div>{{ form2.purchaseState }}</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="备注:">
-                <div>{{ form2.remark }}</div>
-                <el-input v-if="drawerType === 'add'" v-model="form2.remark"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="供应商编号:">
-                <div>{{ form2.supplierNo }}</div>
-                <el-input v-if="drawerType === 'add'" v-model="form2.supplierNo"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="采购成本总金额:">
-                <div>{{ form2.totalCostPrice }}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="采购商品总数:">
-                <div>{{ form2.totalNum }}</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="采购商品总金额:">
-                <div>{{ form2.totalPrice }}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="更新时间:">
-                <div>{{ form2.updateTime }}</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="12">
-              <el-form-item label="更新人:">
-                <div>{{ form2.updateUser }}</div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-
-        <el-form v-if="drawerType === 'add'" ref="form3" :model="form3" label-width="auto" label-position="left">
-          <div class="title">采购单信息</div>
-          <el-form-item label="运营标记信息:" placeholder="请输入运营标记信息">
-            <el-input v-model="form3.operationSign"></el-input>
-          </el-form-item>
-          <el-form-item label="备注:" placeholder="请输入备注">
-            <el-input v-model="form3.remark"></el-input>
-          </el-form-item>
-          <el-form-item label="供应商编号:" placeholder="请输入供应商编号">
-            <el-input v-model="form3.supplierNo"></el-input>
-          </el-form-item>
-          <el-button type="primary" @click="dialogVisible2 = true">新增商品</el-button>
-          <el-dialog title="新增采购商品" append-to-body :visible.sync="dialogVisible2" width="50%">
-
-            <el-row :gutter="20">
-              <el-col :span="6">
-                <el-input v-model="skuForm.categoryNo" placeholder="请输入品类编号"></el-input>
-              </el-col>
-              <el-col :span="6">
-                <el-input v-model="skuForm.sellState" placeholder="请输入售卖状态"></el-input>
-              </el-col>
-              <el-col :span="6">
-                <el-input v-model="skuForm.skuName" placeholder="请输入商品名称"></el-input>
-              </el-col>
-              <el-col :span="6">
-                <el-input v-model="skuForm.skuNo" placeholder="请输入商品编号"></el-input>
-              </el-col>
-            </el-row>
-
-            <el-table
-              :data="skuTableData"
-              style="width: 100%"
-              border
-              :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
-              :cell-style="{ textAlign: 'center' }"
-            >
-              <el-table-column type="selection"></el-table-column>
-              <el-table-column prop="skuNo" label="产品编码"></el-table-column>
-              <el-table-column prop="skuName" label="产品名称"></el-table-column>
-              <el-table-column prop="categoryName" label="商品品类"></el-table-column>
-              <el-table-column prop="" label="结算方式（待确定）"></el-table-column>
-              <el-table-column label="销售状态">
-                <template slot-scope="{ row: { sellState } }">
-                  <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
-                </template>
-              </el-table-column>
-              <el-table-column label="时间" width="220">
-                <template slot-scope="{ row: { createTime, updateTime } }">
-                  <div>
-                    <div>上线时间: {{ createTime || '--' }}</div>
-                    <div>修改时间: {{ updateTime || '--' }}</div>
-                  </div>
-                </template>
-              </el-table-column>
-            </el-table>
-
-            <div class="pagination-container">
-              <el-pagination
-                :current-page="skuForm.pageIndex"
-                :page-sizes="[10, 30, 50, 100]"
-                :page-size="skuForm.pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="skuForm.total"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-              >
-              </el-pagination>
-            </div>
-            <span slot="footer" class="dialog-footer">
-              <el-button type="primary" @click="audit(1)">确认添加</el-button>
-              <el-button @click="dialogVisible2 = false">取 消</el-button>
-            </span>
-          </el-dialog>
-        </el-form>
-
+    <el-drawer title="" :visible.sync="drawer" size="52%">
+      <div class="form-container" style="overflow: scroll; height: 100vh;">
+        <DrawView v-if="drawerType === 'view'" :id="drawId" />
+        <DrawAdd v-if="drawerType === 'add'" />
       </div>
     </el-drawer>
 
@@ -267,52 +120,41 @@
 
 <script>
 import request from '@/utils/request'
+import DrawView from './DrawView.vue'
+import DrawAdd from './DrawAdd.vue'
 
 export default {
   name: 'BaseProductManage', // 基础产品管理
+  components: {
+    DrawView,
+    DrawAdd,
+  },
+  filters: {
+    purchaseStateFilter(value) {
+      if (value === 1) return '待提交'
+      if (value === 2) return '待审核'
+      if (value === 3) return '取消'
+      if (value === 4) return '审核不通过'
+      if (value === 5) return '审核通过'
+      if (value === 6) return '已到货'
+      if (value === 7) return '已结单'
+      return '--'
+    }
+  },
   data() {
     return {
+      drawId: null,
       skuTableData: [],
       drawer: false,
       drawerType: 'view',
       auditRemark: '',
       purchaseId: null,
       dialogVisible: false,
-      dialogVisible2: false,
       form: {
         operationSign: '',
         orderState: '',
         purchaseNo: '',
         supplierNo: '',
-      },
-      form2: {
-        createUser: '',
-        creteTime: '',
-        id: '',
-        operationSign: '',
-        purchaseNo: '',
-        purchaseState: '',
-        remark: '',
-        supplierNo: '',
-        totalCostPrice: '',
-        totalNum: '',
-        totalPrice: '',
-        updateTime: '',
-        updateUser: '',
-      },
-      form3: {
-        operationSign: '',
-        remark: '',
-        supplierNo: '',
-      },
-      skuForm: {
-        categoryNo: '',
-        sellState: '',
-        skuName: '',
-        skuNo: '',
-        pageIndex: 1,
-        pageSize: 10,
-        total: 0,
       },
       tableData: [],
       total: 0,
@@ -334,65 +176,13 @@ export default {
     add() {
       this.drawerType = 'add'
       this.drawer = true
-      this.form2 = {
-        createUser: '',
-        creteTime: '',
-        id: '',
-        operationSign: '',
-        purchaseNo: '',
-        purchaseState: '',
-        remark: '',
-        supplierNo: '',
-        totalCostPrice: '',
-        totalNum: '',
-        totalPrice: '',
-        updateTime: '',
-        updateUser: '',
-      }
-      this.getGoodsSku()
-    },
-
-    async getGoodsSku() {
-      const { data } = await request({
-        method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
-        data: {
-          sellState: this.skuForm.sellState || undefined,
-          skuNo: this.skuForm.skuNo || undefined,
-          skuName: this.skuForm.skuName || undefined,
-          categoryName: this.skuForm.categoryName || undefined,
-          pageIndex: this.skuForm.pageIndex,
-          pageSize: this.skuForm.pageSize,
-        }
-      })
-      const { list, total } = data
-      this.skuTableData = list
-      this.skuForm.total = total
     },
 
     openDraw(id) {
       this.drawerType = 'view'
+      this.drawId = id
       this.drawer = true
-      this.getOrder(id)
     },
-
-    async getOrder(id) {
-      const { data } = await request({
-        method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseOrder/get',
-        params: { id },
-      })
-      this.form2 = Object.assign(this.form2, data)
-    },
-
-    // async purchaseDetail(id) {
-    //   const { data } = await request({
-    //     method: 'GET',
-    //     url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseDetail/page',
-    //     params: { id },
-    //   })
-    //   this.form2 = Object.assign(this.form2, data)
-    // },
 
     openDialog(id) {
       this.purchaseId = id
@@ -464,7 +254,7 @@ export default {
   }
   .table-container {
     margin-top: 25px;
-    padding: 80px 30px;
+    padding: 30px;
     .pagination-container {
       display: flex;
       justify-content: center;

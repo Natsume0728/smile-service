@@ -9,41 +9,44 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="商户级别" placeholder="请输入商户级别">
-              <el-input v-model="form.merchantLevel"></el-input>
+            <el-form-item label="商户级别">
+              <el-input v-model="form.merchantLevel" placeholder="请输入商户级别"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="商户名称" placeholder="请输入商户名称">
-              <el-input v-model="form.merchantName"></el-input>
+            <el-form-item label="商户名称">
+              <el-input v-model="form.merchantName" placeholder="请输入商户名称"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="商户编号" placeholder="请输入商户编号">
-              <el-input v-model="form.merchantNo"></el-input>
+            <el-form-item label="商户编号">
+              <el-input v-model="form.merchantNo" placeholder="请输入商户编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="有效状态" placeholder="请输入有效状态">
-              <el-input v-model="form.validSate"></el-input>
+            <el-form-item label="有效状态">
+              <el-select v-model="form.validState" placeholder="请输入有效状态">
+                <el-option label="禁用" :value="0"></el-option>
+                <el-option label="启用" :value="1"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="getMerchantList">查询</el-button>
               <el-button @click="reset">重置</el-button>
-              <el-button @click="add">新增</el-button>
+              <el-button type="primary" @click="openDraw(id, 'add')">新增商户</el-button>
             </el-form-item>
           </el-col>
         </el-row>
-
       </el-form>
     </div>
 
     <div class="table-container">
+      <h3>商户信息</h3>
       <el-table
         :data="tableData"
         style="width: 100%"
@@ -55,13 +58,17 @@
         <el-table-column prop="merchantLevel" label="商户级别"></el-table-column>
         <el-table-column prop="merchantName" label="商户名称"></el-table-column>
         <el-table-column prop="merchantNo" label="商户编号"></el-table-column>
-        <el-table-column prop="validSate" label="有效状态"></el-table-column>
+        <el-table-column prop="validState" label="有效状态">
+          <template slot-scope="{ row: { validSate } }">
+            {{ validState === 0 ? '禁用' : '启用' }}
+          </template>
+        </el-table-column>
         <el-table-column label="操作" width="180">
-          <template slot-scope="{ row: { validSate, id } }">
-            <el-button type="text" @click="handleView(id, 'view')">查看</el-button>
-            <el-button type="text" @click="handleEdit(id, 'edit')">编辑</el-button>
-            <el-button v-if="validSate === 1" type="text" @click="remove(id)">禁用</el-button>
-            <el-button v-if="validSate === 0" type="text" @click="renew(id)">启用</el-button>
+          <template slot-scope="{ row: { validState, id } }">
+            <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
+            <el-button type="text" @click="openDraw(id, 'edit')">编辑</el-button>
+            <el-button v-if="validState === 1" type="text" @click="remove(id)">禁用</el-button>
+            <el-button v-if="validState === 0" type="text" @click="renew(id)">启用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -70,25 +77,43 @@
         <el-pagination
           :current-page="pageIndex"
           :page-sizes="[10, 30, 50, 100]"
-          :page-size="pageSize"
+          :page-size.sync="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @size-change="refresh"
+          @current-change="refresh"
         >
         </el-pagination>
       </div>
     </div>
+    <el-drawer title="" :visible.sync="drawer" size="40%">
+      <div class="form-container">
+        <DrawView v-if="drawerType === 'view'" :id="drawId" />
+        <DrawEdit v-if="drawerType === 'edit'" :id="drawId" @refresh="refresh" />
+        <DrawAdd v-if="drawerType === 'add'" @refresh="refresh" />
+      </div>
+    </el-drawer>
   </div>
 </template>
 
 <script>
 import request from '@/utils/request'
+import DrawView from './DrawView.vue'
+import DrawAdd from './DrawAdd.vue'
+import DrawEdit from './DrawEdit.vue'
 
 export default {
   name: 'BaseProductManage', // 基础产品管理
+  components: {
+    DrawView,
+    DrawAdd,
+    DrawEdit,
+  },
   data() {
     return {
+      drawerType: 'view',
+      drawId: null,
+      drawer: false,
       form: {
         merchantAlias: '',
         merchantLevel: '',
@@ -106,6 +131,16 @@ export default {
     this.getMerchantList()
   },
   methods: {
+    refresh() {
+      this.drawer = false
+      this.getMerchantList()
+    },
+
+    openDraw(orderId, drawerType) {
+      this.drawerType = drawerType
+      this.drawId = orderId || undefined
+      this.drawer = true
+    },
     add() {
       this.$router.push({ name: 'MerchantAdd' })
     },
@@ -138,17 +173,6 @@ export default {
       this.getMerchantList()
     },
 
-    async editSellState(skuId, state) {
-      const { data } = await request({
-        method: 'get',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/editSellState',
-        params: {
-          skuId,
-          state,
-        }
-      })
-    },
-
     async getMerchantList() {
       const { data } = await request({
         method: 'post',
@@ -166,20 +190,19 @@ export default {
       const { list, total } = data
       this.tableData = list
       this.total = total
-      console.log('list', list)
     },
-    search() {
-      console.log('search!')
-    },
+
     reset() {
-      console.log('reset!')
+      this.form = {
+        merchantAlias: '',
+        merchantLevel: '',
+        merchantName: '',
+        merchantNo: '',
+        validState: '',
+      }
+      this.refresh()
     },
-    handleSizeChange() {
-      console.log('handleSizeChange!')
-    },
-    handleCurrentChange() {
-      console.log('handleCurrentChange!')
-    },
+
   },
 }
 </script>
@@ -197,7 +220,7 @@ export default {
   }
   .table-container {
     margin-top: 25px;
-    padding: 80px 30px;
+    padding: 30px;
     .pagination-container {
       display: flex;
       justify-content: center;
