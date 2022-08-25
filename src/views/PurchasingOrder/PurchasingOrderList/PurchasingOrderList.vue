@@ -102,24 +102,24 @@
           <div class="title">采购单信息</div>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="创建人:" placeholder="请输入创建人">
+              <el-form-item label="创建人:">
                 <div>{{ form2.createUser }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="创建时间:" placeholder="请输入创建时间">
+              <el-form-item label="创建时间:">
                 <div>{{ form2.creteTime }}</div>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="采购单ID:" placeholder="请输入采购单ID">
+              <el-form-item label="采购单ID:">
                 <div>{{ form2.id }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="运营标记信息:" placeholder="请输入运营标记信息">
+              <el-form-item label="运营标记信息:">
                 <div>{{ form2.operationSign }}</div>
                 <el-input v-if="drawerType === 'add'" v-model="form2.operationSign"></el-input>
               </el-form-item>
@@ -127,25 +127,25 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="采购单编号:" placeholder="请输入采购单编号">
+              <el-form-item label="采购单编号:">
                 <div>{{ form2.purchaseNo }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="采购状态:" placeholder="请输入采购状态">
+              <el-form-item label="采购状态:">
                 <div>{{ form2.purchaseState }}</div>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="备注:" placeholder="请输入备注">
+              <el-form-item label="备注:">
                 <div>{{ form2.remark }}</div>
                 <el-input v-if="drawerType === 'add'" v-model="form2.remark"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="供应商编号:" placeholder="请输入供应商编号">
+              <el-form-item label="供应商编号:">
                 <div>{{ form2.supplierNo }}</div>
                 <el-input v-if="drawerType === 'add'" v-model="form2.supplierNo"></el-input>
               </el-form-item>
@@ -153,31 +153,31 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="采购成本总金额:" placeholder="请输入采购成本总金额">
+              <el-form-item label="采购成本总金额:">
                 <div>{{ form2.totalCostPrice }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="采购商品总数:" placeholder="请输入采购商品总数">
+              <el-form-item label="采购商品总数:">
                 <div>{{ form2.totalNum }}</div>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="采购商品总金额:" placeholder="请输入采购商品总金额">
+              <el-form-item label="采购商品总金额:">
                 <div>{{ form2.totalPrice }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="更新时间:" placeholder="请输入更新时间">
+              <el-form-item label="更新时间:">
                 <div>{{ form2.updateTime }}</div>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="更新人:" placeholder="请输入更新人">
+              <el-form-item label="更新人:">
                 <div>{{ form2.updateUser }}</div>
               </el-form-item>
             </el-col>
@@ -330,6 +330,7 @@ export default {
     handleCurrentChange() {
       console.log('handleCurrentChange!')
     },
+
     add() {
       this.drawerType = 'add'
       this.drawer = true
