@@ -151,8 +151,8 @@ export default {
       const { list, total } = data
       this.tableData = list
       this.total = total
-      console.log('list', list)
     },
+
     search() {
       console.log('search!')
     },
