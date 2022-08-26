@@ -29,11 +29,12 @@ export default {
   },
   methods: {
     async addOrder() {
-      const { data } = await request({
+      const { code } = await request({
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/add',
         data: this.form3,
       })
+      if (code === '0000') this.$emit('refresh')
     },
   }
 }

@@ -9,7 +9,7 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="创建时间:">
-          <div>{{ form2.creteTime }}</div>
+          <div>{{ form2.creteTime || '--' }}</div>
         </el-form-item>
       </el-col>
     </el-row>
@@ -21,7 +21,7 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="订单权益发放份数:">
-          <div>{{ form2.grantNum }}</div>
+          <div>{{ form2.grantNum || '--' }}</div>
         </el-form-item>
       </el-col>
     </el-row>

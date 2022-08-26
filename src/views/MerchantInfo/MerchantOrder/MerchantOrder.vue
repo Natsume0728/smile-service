@@ -12,20 +12,20 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="商户编号" placeholder="请输入商户编号">
-              <el-input v-model="form.merchantNo"></el-input>
+            <el-form-item label="商户编号">
+              <el-input v-model="form.merchantNo" placeholder="请输入商户编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="商户订单编号" placeholder="请输入商户订单编号">
-              <el-input v-model="form.merchantOrderNo"></el-input>
+            <el-form-item label="商户订单编号">
+              <el-input v-model="form.merchantOrderNo" placeholder="请输入商户订单编号"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="订单状态" placeholder="请输入订单状态">
+            <el-form-item label="订单状态">
               <el-select v-model="form.orderState" placeholder="请输入订单状态">
                 <el-option label="待审核" value="1"></el-option>
                 <el-option label="已取消" value="2"></el-option>
@@ -101,7 +101,7 @@
       <el-drawer title="" :visible.sync="drawer" size="40%">
         <div class="form-container">
           <DrawView v-if="drawerType === 'view'" :id="drawId" />
-          <DrawAdd v-if="drawerType === 'add'" />
+          <DrawAdd v-if="drawerType === 'add'" @refresh="refresh" />
         </div>
       </el-drawer>
     </div>
@@ -155,6 +155,10 @@ export default {
     this.merchantOrder()
   },
   methods: {
+    refresh() {
+      this.drawer = false
+      this.merchantOrder()
+    },
 
     openDraw(orderId) {
       this.drawerType = 'view'
