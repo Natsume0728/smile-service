@@ -108,11 +108,9 @@
       </span>
     </el-dialog>
 
-    <el-drawer title="" :visible.sync="drawer" size="52%">
-      <div class="form-container" style="overflow: scroll; height: 100vh;">
-        <DrawView v-if="drawerType === 'view'" :id="drawId" />
-        <DrawAdd v-if="drawerType === 'add'" />
-      </div>
+    <el-drawer title="" :visible.sync="drawer" size="80%" :with-header="false">
+      <DrawView v-if="drawerType === 'view'" :id="drawId" />
+      <DrawAdd v-if="drawerType === 'add'" :drawer="drawer" @refresh="refresh" />
     </el-drawer>
 
   </div>
@@ -166,6 +164,11 @@ export default {
     this.getPurchaseOrder()
   },
   methods: {
+    refresh() {
+      this.drawer = false
+      this.getPurchaseOrder()
+    },
+
     handleSizeChange() {
       console.log('handleSizeChange!')
     },
@@ -201,6 +204,7 @@ export default {
       })
       if (code === '0000') {
         this.dialogVisible = false
+        this.refresh()
       }
     },
 

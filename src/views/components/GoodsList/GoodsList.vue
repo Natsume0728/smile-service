@@ -9,8 +9,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="品类编号">
-              <el-input v-model="form.skuName" placeholder="请输入品类编号"></el-input>
+            <el-form-item label="商品名称">
+              <el-input v-model="form.skuName" placeholder="请输入商品名称"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -25,8 +25,8 @@
 
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="标准sku编号">
-              <el-input v-model="form.skuNo" placeholder="请输入标准sku编号"></el-input>
+            <el-form-item label="商品编号">
+              <el-input v-model="form.skuNo" placeholder="请输入商品编号"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -61,7 +61,7 @@
         <el-table-column prop="skuNo" label="商品sku编号"></el-table-column>
         <el-table-column label="创建人/更新人">
           <template slot-scope="{ row: { createUser, updateUser } }">
-            <div>{{ createUser || '--' }}/{{ updateUser || '--'}}</div>
+            <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
           </template>
         </el-table-column>
         <el-table-column label="销售状态">
@@ -99,7 +99,7 @@
         </el-pagination>
       </div>
     </div>
-    <el-drawer title="" :visible.sync="drawer" size="40%">
+    <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
       <div class="form-container">
         <DrawView v-if="drawerType === 'view'" :id="drawId" />
         <DrawEdit v-if="drawerType === 'edit'" :id="drawId" @refresh="refresh" />
@@ -131,7 +131,7 @@ export default {
         skuNo: '',
         skuName: '',
         sellState: '',
-        categoryName: '',
+        categoryNo: '',
       },
       tableData: [],
       total: 0,
@@ -167,6 +167,7 @@ export default {
     },
 
     async getGoodsSku() {
+      console.log('this.form', this.form)
       const { data } = await request({
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
@@ -174,7 +175,7 @@ export default {
           sellState: this.form.sellState || undefined,
           skuNo: this.form.skuNo || undefined,
           skuName: this.form.skuName || undefined,
-          categoryName: this.form.categoryName || undefined,
+          categoryNo: this.form.categoryNo || undefined,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
         }
@@ -189,7 +190,7 @@ export default {
         skuNo: '',
         skuName: '',
         sellState: '',
-        categoryName: '',
+        categoryNo: '',
       }
       this.refresh()
     },

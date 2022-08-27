@@ -1,98 +1,101 @@
 <template>
-  <el-form ref="form2" :model="form2" label-width="auto" label-position="left">
+  <section>
     <h3>商户订单信息</h3>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="审核意见:">
-          <div>{{ form2.auditRemark }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="创建时间:">
-          <div>{{ form2.creteTime || '--' }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="创建人:">
-          <div>{{ form2.createUser }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="订单权益发放份数:">
-          <div>{{ form2.grantNum || '--' }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="实际权益发放份数:">
-          <div>{{ form2.grantNumActual }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="发放状态:">
-          <div>{{ form2.grantState }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="权益发放实际时间:">
-          <div>{{ form2.grantTimeActual }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="权益发放时间:">
-          <div>{{ form2.grantTimeBegin }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="商户订单id:">
-          <div>{{ form2.id }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="商户编号:">
-          <div>{{ form2.merchantNo }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="商户订单编号:">
-          <div>{{ form2.merchantOrderNo }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="订单状态:">
-          <div>{{ form2.orderState | orderStateFilter }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="权益发放后领取截止时间限制:">
-          <div>{{ form2.receiveTimeLimit }}</div>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
-        <el-form-item label="更新时间:">
-          <div>{{ form2.updateTime }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">
-        <el-form-item label="更新人:">
-          <div>{{ form2.updateUser }}</div>
-        </el-form-item>
-      </el-col>
-    </el-row>
-  </el-form>
+    <el-form ref="form2" class="form" :model="form2" label-width="auto" label-position="left" size="mini">
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="权益发放时间:">
+            <div>{{ form2.grantTimeBegin }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="权益发放实际时间:">
+            <div>{{ form2.grantTimeActual || '--' }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="审核意见:">
+            <div>{{ form2.auditRemark }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="权益发放后领取截止时间限制:">
+            <div>{{ form2.receiveTimeLimit }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="商户订单id:">
+            <div>{{ form2.id }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="商户编号:">
+            <div>{{ form2.merchantNo }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="商户订单编号:">
+            <div>{{ form2.merchantOrderNo }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="订单状态:">
+            <div>{{ form2.orderState | orderStateFilter }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="创建时间:">
+            <div>{{ form2.creteTime || '--' }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="更新时间:">
+            <div>{{ form2.updateTime }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="创建人:">
+            <div>{{ form2.createUser }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="更新人:">
+            <div>{{ form2.updateUser }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="订单权益发放份数:">
+            <div>{{ form2.grantNum || '--' }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="实际权益发放份数:">
+            <div>{{ form2.grantNumActual }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="发放状态:">
+            <div>{{ form2.grantState }}</div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+  </section>
 </template>
 
 <script>
@@ -108,6 +111,7 @@ export default {
       return '--'
     }
   },
+
   props: {
     id: {
       type: Number,
@@ -153,23 +157,12 @@ export default {
       this.form2 = Object.assign(this.form2, data)
     },
 
-    async merchantOrderDetail(orderId) {
-      const { data } = await request({
-        method: 'POST',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderDetail/page',
-        data: {
-          'grantMode': 1,
-          'merchantOrderNo': this.id,
-          'pageIndex': 1,
-          'pageSize': 10,
-          'skuNo': 'G100012020'
-        },
-      })
-    },
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+// .form>>>.el-form-item {
+//   margin-bottom: 10px;
+// }
 </style>

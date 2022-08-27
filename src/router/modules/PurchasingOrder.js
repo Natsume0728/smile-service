@@ -16,7 +16,7 @@ const PurchasingOrderRouter = {
       path: 'PurchasingOrderList',
       component: () => import('@/views/PurchasingOrder/PurchasingOrderList/PurchasingOrderList'),
       name: 'PurchasingOrderList',
-      meta: { title: '采购单列表', noCache: true }
+      meta: { title: '采购单', noCache: true }
     },
   ]
 }

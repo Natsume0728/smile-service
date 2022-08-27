@@ -20,6 +20,8 @@ import './utils/error-log' // error log
 import * as filters from './filters' // global filters
 import SlideVerify from 'vue-monoplasty-slide-verify'
 
+Vue.config.devtools = true
+
 Vue.use(SlideVerify)
 /**
  * If you don't want to use mock-server

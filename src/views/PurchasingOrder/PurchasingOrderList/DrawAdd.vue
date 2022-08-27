@@ -1,182 +1,214 @@
 <template>
-  <el-form ref="form3" :model="form3" label-width="auto" label-position="left" style="over-flow: scroll">
-    <h3>新增采购单</h3>
-    <el-form-item label="供应商编号:" placeholder="请输入供应商编号">
-      <el-input v-model="form3.supplierNo"></el-input>
-    </el-form-item>
-    <el-form-item label="运营标记信息:" placeholder="请输入运营标记信息">
-      <el-input v-model="form3.operationSign"></el-input>
-    </el-form-item>
-    <el-form-item label="备注:" placeholder="请输入备注">
-      <el-input v-model="form3.remark"></el-input>
-    </el-form-item>
-    <el-button type="primary" @click="dialogVisible2 = true">新增商品</el-button>
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <el-input v-model="skuForm.categoryNo" placeholder="请输入品类编号"></el-input>
-      </el-col>
-      <el-col :span="6">
-        <el-input v-model="skuForm.sellState" placeholder="请输入售卖状态"></el-input>
-      </el-col>
-      <el-col :span="6">
-        <el-input v-model="skuForm.skuName" placeholder="请输入商品名称"></el-input>
-      </el-col>
-      <el-col :span="6">
-        <el-input v-model="skuForm.skuNo" placeholder="请输入商品编号"></el-input>
-      </el-col>
-    </el-row>
+  <div class="container">
+    <el-form ref="form3" :model="form3" label-width="auto" label-position="left" class="form">
+      <div class="form-container">
+        <h3>新增采购单</h3>
+        <el-button type="primary" size="small" @click="add">保存采购单</el-button>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <el-form-item label="供应商编号:">
+              <el-input v-model="form3.supplierNO" placeholder="请输入供应商编号" size="mini"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="运营标记信息:">
+              <el-input v-model="form3.operationSign" placeholder="请输入运营标记信息" size="mini"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="采购备注信息:">
+              <el-input v-model="form3.remark" placeholder="请输入备注" size="mini"></el-input>
+            </el-form-item>
+          </el-col>
 
-    <el-table
-      :data="skuTableData"
-      style="width: 100%"
-      border
-      :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
-      :cell-style="{ textAlign: 'center' }"
-    >
-      <el-table-column type="selection"></el-table-column>
-      <el-table-column prop="skuNo" label="产品编码"></el-table-column>
-      <el-table-column prop="skuName" label="产品名称"></el-table-column>
-      <el-table-column prop="categoryName" label="商品品类"></el-table-column>
-      <el-table-column prop="" label="结算方式（待确定）"></el-table-column>
-      <el-table-column label="销售状态">
-        <template slot-scope="{ row: { sellState } }">
-          <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
-        </template>
-      </el-table-column>
-      <el-table-column label="时间" width="220">
-        <template slot-scope="{ row: { createTime, updateTime } }">
-          <div>
-            <div>上线时间: {{ createTime || '--' }}</div>
-            <div>修改时间: {{ updateTime || '--' }}</div>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <div class="pagination-container">
-      <el-pagination
-        :current-page="skuForm.pageIndex"
-        :page-sizes="[10, 30, 50, 100]"
-        :page-size="skuForm.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="skuForm.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      >
-      </el-pagination>
-    </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="audit(1)">确认添加</el-button>
-      <el-button @click="dialogVisible2 = false">取 消</el-button>
-    </span>
-    <el-dialog title="新增采购商品" append-to-body :visible.sync="dialogVisible2" width="60%">
-
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <el-input v-model="skuForm.categoryNo" placeholder="请输入品类编号"></el-input>
-        </el-col>
-        <el-col :span="6">
-          <el-input v-model="skuForm.sellState" placeholder="请输入售卖状态"></el-input>
-        </el-col>
-        <el-col :span="6">
-          <el-input v-model="skuForm.skuName" placeholder="请输入商品名称"></el-input>
-        </el-col>
-        <el-col :span="6">
-          <el-input v-model="skuForm.skuNo" placeholder="请输入商品编号"></el-input>
-        </el-col>
-      </el-row>
-
-      <el-table
-        :data="skuTableData"
-        style="width: 100%"
-        border
-        :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
-        :cell-style="{ textAlign: 'center' }"
-      >
-        <el-table-column type="selection"></el-table-column>
-        <el-table-column prop="skuNo" label="产品编码"></el-table-column>
-        <el-table-column prop="skuName" label="产品名称"></el-table-column>
-        <el-table-column prop="categoryName" label="商品品类"></el-table-column>
-        <el-table-column prop="" label="结算方式（待确定）"></el-table-column>
-        <el-table-column label="销售状态">
-          <template slot-scope="{ row: { sellState } }">
-            <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
-          </template>
-        </el-table-column>
-        <el-table-column label="时间" width="220">
-          <template slot-scope="{ row: { createTime, updateTime } }">
-            <div>
-              <div>上线时间: {{ createTime || '--' }}</div>
-              <div>修改时间: {{ updateTime || '--' }}</div>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <div class="pagination-container">
-        <el-pagination
-          :current-page="skuForm.pageIndex"
-          :page-sizes="[10, 30, 50, 100]"
-          :page-size="skuForm.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="skuForm.total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        >
-        </el-pagination>
+        </el-row>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="audit(1)">确认添加</el-button>
-        <el-button @click="dialogVisible2 = false">取 消</el-button>
-      </span>
-    </el-dialog>
-  </el-form>
+
+      <div class="form-container" style="margin-top: 20px; padding-bottom: 0">
+        <el-form ref="form" :model="form" label-width="70px">
+          <el-row :gutter="10">
+            <el-col :span="6">
+              <el-form-item label="品类编号">
+                <el-input v-model="form.categoryNo" placeholder="品类编号" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="商品名称">
+                <el-input v-model="form.skuName" placeholder="请输入商品名称" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="商品编号">
+                <el-input v-model="form.skuNo" placeholder="请输入商品编号" size="mini"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="refresh">搜索</el-button>
+                <el-button size="mini" @click="reset">重置</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+
+        </el-form>
+      </div>
+      <div class="table-container">
+        <el-table
+          :data="tableData"
+          max-height="470"
+          border
+          :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
+          :cell-style="{ textAlign: 'center' }"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="55"></el-table-column>
+          <el-table-column prop="skuNum" label="商品数量" width="155">
+            <template slot-scope="{ row }">
+              <el-input-number v-if="row.edit" v-model="row.skuNum" controls-position="right" placeholder="请输入" size="mini"></el-input-number>
+              <div v-else>--</div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="skuNo" label="商品编号"></el-table-column>
+          <el-table-column prop="id" label="商品id"></el-table-column>
+          <el-table-column prop="skuName" label="商品名称"></el-table-column>
+          <el-table-column prop="appDetailUrl" label="对客展示详情链接"></el-table-column>
+          <el-table-column prop="appSkuDescription" label="对客展示简单描述"></el-table-column>
+          <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
+          <el-table-column prop="categoryNo" label="商品品类编号"></el-table-column>
+          <el-table-column prop="categoryName" label="商品品类名称"></el-table-column>
+          <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
+        </el-table>
+
+        <div class="pagination-container">
+          <el-pagination
+            :current-page="pageIndex"
+            :page-sizes="[5, 10]"
+            :page-size.sync="pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+            @size-change="refresh"
+            @current-change="refresh"
+          >
+          </el-pagination>
+        </div>
+
+      </div>
+
+    </el-form>
+  </div>
 </template>
 
 <script>
 import request from '@/utils/request'
 
 export default {
+  props: {
+    drawer: {
+      type: Boolean,
+      default: false,
+    }
+  },
+
   data() {
     return {
-      dialogVisible2: false,
+      tableData: [],
       form3: {
         operationSign: '',
         remark: '',
-        supplierNo: '',
+        supplierNO: '',
       },
-      skuForm: {
-        categoryNo: '',
-        sellState: '',
-        skuName: '',
+      form: {
         skuNo: '',
-        pageIndex: 1,
-        pageSize: 10,
-        total: 0,
+        skuName: '',
+        categoryNo: '',
       },
+      pageIndex: 1,
+      pageSize: 10,
+      total: 0,
+      selectedGoods: [],
     }
   },
+
+  watch: {
+    drawer(v) {
+      if (!v) {
+        this.form3 = {
+          operationSign: '',
+          remark: '',
+          supplierNO: '',
+        }
+        this.reset()
+      }
+    }
+  },
+
   mounted() {
-    this.getGoodsSku()
+    this.refresh()
   },
   methods: {
+    async add() {
+      const detailList = this.tableData.filter(el => el.edit).map(item => {
+        return {
+          skuNum: item.skuNum,
+          skuNo: item.skuNo,
+        }
+      })
+      const { code } = await request({
+        method: 'post',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseOrder/add',
+        data: {
+          detailList,
+          'supplierNO': this.form3.supplierNO,
+          'operationSign': this.form3.operationSign || undefined,
+          'remark': this.form3.remark || undefined,
+        }
+      })
+      if (code === '0000') this.$emit('refresh')
+    },
+
+    handleSelectionChange(val) {
+      this.selectedGoods = val
+      const selectedIds = val.map(el => el.id)
+      this.tableData.forEach(item => {
+        item.edit = selectedIds.includes(item.id)
+      })
+    },
+
+    refresh() {
+      this.getGoodsSku()
+    },
+
     async getGoodsSku() {
       const { data } = await request({
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
         data: {
-          sellState: this.skuForm.sellState || undefined,
-          skuNo: this.skuForm.skuNo || undefined,
-          skuName: this.skuForm.skuName || undefined,
-          categoryName: this.skuForm.categoryName || undefined,
-          pageIndex: this.skuForm.pageIndex,
-          pageSize: this.skuForm.pageSize,
+          sellState: 1,
+          skuNo: this.form.skuNo || undefined,
+          skuName: this.form.skuName || undefined,
+          categoryNo: this.form.categoryNo || undefined,
+          pageIndex: this.pageIndex,
+          pageSize: this.pageSize,
+          exchangeLimit: null,
+          exchangeLimitUnit: null,
+          grantMode: null,
+          skuNum: null,
         }
       })
       const { list, total } = data
-      this.skuTableData = list
-      this.skuForm.total = total
+      this.tableData = list
+      this.total = total
     },
+
+    reset() {
+      this.form = {
+        skuNo: '',
+        skuName: '',
+        categoryNo: '',
+      }
+      this.refresh()
+    },
+
     handleSizeChange() {
       console.log('handleSizeChange!')
     },
@@ -187,6 +219,25 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.container {
+  height: 100%;
+  overflow: scroll;
+  background-color: #f3f4f6;
+  padding-top: 19px;
+  .form-container, .table-container {
+    background: #fff;
+  }
+  .form-container {
+    padding: 23px 30px;
+  }
+  .table-container {
+    padding: 30px;
+    padding-top: 0;
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
 </style>

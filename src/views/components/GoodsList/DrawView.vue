@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="form" :model="form" label-width="auto" label-position="left">
+  <el-form ref="form" :model="form" label-width="auto" label-position="left" size="mini">
     <h3>标准商品sku明细信息</h3>
     <el-row>
       <el-col :span="12">

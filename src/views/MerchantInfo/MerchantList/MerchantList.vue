@@ -86,7 +86,7 @@
         </el-pagination>
       </div>
     </div>
-    <el-drawer title="" :visible.sync="drawer" size="40%">
+    <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
       <div class="form-container">
         <DrawView v-if="drawerType === 'view'" :id="drawId" />
         <DrawEdit v-if="drawerType === 'edit'" :id="drawId" @refresh="refresh" />

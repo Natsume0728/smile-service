@@ -55,21 +55,40 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
+        <el-table-column prop="id" label="商户订单id"></el-table-column>
+        <el-table-column prop="merchantNo" label="商户编号"></el-table-column>
+        <el-table-column prop="merchantOrderNo" label="商户订单编号" width="170"></el-table-column>
         <el-table-column prop="grantState" label="发放状态">
           <template slot-scope="{ row: { grantState } }">
             <div>{{ grantState === 0 ? '未发放' : '已发放' }}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="merchantNo" label="商户编号"></el-table-column>
-        <el-table-column prop="merchantOrderNo" label="商户订单编号"></el-table-column>
+        <el-table-column prop="auditRemark" label="审核意见"></el-table-column>
+        <el-table-column prop="grantNum" label="订单权益发放份数"></el-table-column>
+        <el-table-column prop="grantNumActual" label="实际权益发放份数"></el-table-column>
+        <el-table-column prop="grantTimeActual" label="权益发放实际时间"></el-table-column>
+        <el-table-column prop="grantTimeBegin" label="权益发放时间" width="170"></el-table-column>
+        <el-table-column prop="receiveTimeLimit" label="权益发放后领取截止时间限制(空无限制)" width="170"></el-table-column>
         <el-table-column prop="orderState" label="订单状态">
           <template slot-scope="{ row: { orderState } }">
             <div>{{ orderState | orderStateFilter }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="250">
-          <template slot-scope="{ row: { id } }">
-            <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
+        <el-table-column label="时间" width="220">
+          <template slot-scope="{ row: { createTime, updateTime } }">
+            <div>创建时间: {{ createTime || '--' }}</div>
+            <div>更新时间: {{ updateTime || '--' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建人/更新人" width="110">
+          <template slot-scope="{ row: { createUser, updateUser } }">
+            <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="320">
+          <template slot-scope="{ row: { id, merchantOrderNo } }">
+            <el-button type="text" @click="jumpCustomList(id, merchantOrderNo)">查看商户订单消费者</el-button>
+            <el-button type="text" @click="jumpGoodsList(id, merchantOrderNo)">查看商户订单商品</el-button>
             <el-button type="text" @click="submit(id)">提交审核</el-button>
             <el-button type="text" @click="openDialog(id)">审核</el-button>
             <el-button type="text" @click="cancel(id)">取消订单</el-button>
@@ -98,7 +117,7 @@
         </span>
       </el-dialog>
 
-      <el-drawer title="" :visible.sync="drawer" size="40%">
+      <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
         <div class="form-container">
           <DrawView v-if="drawerType === 'view'" :id="drawId" />
           <DrawAdd v-if="drawerType === 'add'" @refresh="refresh" />
@@ -114,7 +133,7 @@ import DrawView from './DrawView.vue'
 import DrawAdd from './DrawAdd.vue'
 
 export default {
-  name: 'BaseProductManage', // 基础产品管理
+  name: 'MerchantOrder',
   filters: {
     orderStateFilter(value) {
       if (value === 1) return '待审核'
@@ -140,12 +159,8 @@ export default {
       },
       dialogVisible: false,
       form: {
-        'grantState': undefined,
-        'merchantNo': undefined,
-        'merchantOrderNo': undefined,
-        'orderState': undefined,
-        'pageIndex': 1,
-        'pageSize': 10,
+        pageIndex: 1,
+        pageSize: 10,
         total: 0,
       },
       tableData: [],
@@ -155,6 +170,14 @@ export default {
     this.merchantOrder()
   },
   methods: {
+    jumpCustomList(id, merchantOrderNo) {
+      this.$router.push({ name: 'MerchantOrderCustomList', params: { id, merchantOrderNo }})
+    },
+
+    jumpGoodsList(id, merchantOrderNo) {
+      this.$router.push({ name: 'MerchantOrderGoodslist', params: { id, merchantOrderNo }})
+    },
+
     refresh() {
       this.drawer = false
       this.merchantOrder()
@@ -240,12 +263,8 @@ export default {
     },
     reset() {
       this.form = {
-        'grantState': undefined,
-        'merchantNo': undefined,
-        'merchantOrderNo': undefined,
-        'orderState': undefined,
-        'pageIndex': 1,
-        'pageSize': 10,
+        pageIndex: 1,
+        pageSize: 10,
         total: 0,
       }
       this.merchantOrder()

@@ -8,7 +8,7 @@ const MerchantInfoRouter = {
   redirect: 'noRedirect',
   name: 'MerchantInfo',
   meta: {
-    title: '商户信息管理',
+    title: '商户管理',
     icon: 'chart'
   },
   children: [
@@ -22,7 +22,19 @@ const MerchantInfoRouter = {
       path: 'MerchantOrder',
       component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrder'),
       name: 'MerchantOrder',
-      meta: { title: '商户订单', noCache: true }
+      meta: { title: '商户订单', noCache: true },
+    },
+    {
+      path: 'MerchantOrderGoodslist',
+      component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderGoodslist/MerchantOrderGoodslist'),
+      name: 'MerchantOrderGoodslist',
+      meta: { title: '商户订单商品列表', noCache: true },
+    },
+    {
+      path: 'MerchantOrderCustomList',
+      component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderCustomList/MerchantOrderCustomList'),
+      name: 'MerchantOrderCustomList',
+      meta: { title: '商户订单消费者列表', noCache: true },
     },
   ]
 }
