@@ -2,13 +2,15 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import md5 from 'md5'
+import request from '@/utils/request'
 
 const state = {
   token: getToken(),
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  manageCommonEnumDictAll: {},
 }
 
 const mutations = {
@@ -26,7 +28,21 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
-  }
+  },
+
+  SET_manageCommonEnumDictAll: (state, manageCommonEnumDictAll) => {
+    state.manageCommonEnumDictAll = manageCommonEnumDictAll
+  },
+
+}
+
+const enumDictAll = async(commit) => {
+  const { data } = await request({
+    method: 'GET',
+    url: 'https://dev.defenderfintech.com/smile-api/manage-api/manage/common/enumDictAll',
+  })
+  commit('SET_manageCommonEnumDictAll', data)
+  console.log('enumDictAll', data)
 }
 
 const actions = {
@@ -35,10 +51,10 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: md5(password) }).then(response => {
-        console.log('response', response)
-        const { data, token } = response
+        const { token } = response
         commit('SET_TOKEN', token)
         // setToken(data.token)
+        enumDictAll(commit)
         resolve()
       }).catch(error => {
         reject(error)

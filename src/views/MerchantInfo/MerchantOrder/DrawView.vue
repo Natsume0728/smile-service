@@ -152,6 +152,20 @@ export default {
       })
       this.form2 = Object.assign(this.form2, data)
     },
+
+    async merchantOrderDetail(orderId) {
+      const { data } = await request({
+        method: 'POST',
+        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderDetail/page',
+        data: {
+          'grantMode': 1,
+          'merchantOrderNo': this.id,
+          'pageIndex': 1,
+          'pageSize': 10,
+          'skuNo': 'G100012020'
+        },
+      })
+    },
   }
 }
 </script>
