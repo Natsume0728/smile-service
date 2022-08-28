@@ -81,7 +81,7 @@
 
         <div class="pagination-container">
           <el-pagination
-            :current-page="pageIndex"
+            :current-page.sync="pageIndex"
             :page-sizes="[5, 10]"
             :page-size.sync="pageSize"
             layout="total, sizes, prev, pager, next, jumper"

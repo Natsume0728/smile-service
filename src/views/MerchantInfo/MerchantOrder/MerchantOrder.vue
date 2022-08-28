@@ -99,7 +99,7 @@
 
       <div class="pagination-container">
         <el-pagination
-          :current-page="form.pageIndex"
+          :current-page.sync="form.pageIndex"
           :page-sizes="[10, 30, 50, 100]"
           :page-size.sync="form.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
@@ -120,7 +120,6 @@
 
       <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
         <div class="form-container">
-          <DrawView v-if="drawerType === 'view'" :id="drawId" />
           <DrawAdd v-if="drawerType === 'add'" @refresh="refresh" />
         </div>
       </el-drawer>
@@ -130,7 +129,6 @@
 
 <script>
 import request from '@/utils/request'
-import DrawView from './DrawView.vue'
 import DrawAdd from './DrawAdd.vue'
 
 export default {
@@ -145,7 +143,6 @@ export default {
     }
   },
   components: {
-    DrawView,
     DrawAdd,
   },
   data() {
@@ -182,12 +179,6 @@ export default {
     refresh() {
       this.drawer = false
       this.merchantOrder()
-    },
-
-    openDraw(orderId) {
-      this.drawerType = 'view'
-      this.drawId = orderId
-      this.drawer = true
     },
 
     add() {

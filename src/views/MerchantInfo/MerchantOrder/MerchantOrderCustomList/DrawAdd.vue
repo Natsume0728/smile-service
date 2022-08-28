@@ -1,23 +1,27 @@
 <template>
-  <el-form :model="form" label-width="100px" style="padding: 30px;">
-    <h3>新增商户订单消费用户</h3>
-    <el-form-item label="车牌号">
-      <el-input v-model="form.carNo" placeholder="请输入车牌号"></el-input>
-    </el-form-item>
+  <div class="container">
+    <div class="form-container">
+      <el-form :model="form" label-width="100px" style="padding: 30px;">
+        <h3>新增商户订单消费用户</h3>
+        <el-form-item label="车牌号:">
+          <el-input v-model="form.carNo" placeholder="请输入车牌号"></el-input>
+        </el-form-item>
 
-    <el-form-item label="消费者手机号">
-      <el-input v-model="form.phone" placeholder="请输入消费者手机号"></el-input>
-    </el-form-item>
+        <el-form-item label="消费者手机号:">
+          <el-input v-model="form.phone" placeholder="请输入消费者手机号"></el-input>
+        </el-form-item>
 
-    <el-form-item label="保单号">
-      <el-input v-model="form.policyNo" placeholder="请输入保单号"></el-input>
-    </el-form-item>
+        <el-form-item label="保单号:">
+          <el-input v-model="form.policyNo" placeholder="请输入保单号"></el-input>
+        </el-form-item>
 
-    <el-form-item>
-      <el-button type="primary" @click="addMerchantOrderConsumer">新增</el-button>
-    </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="addMerchantOrderConsumer">新增</el-button>
+        </el-form-item>
 
-  </el-form>
+      </el-form>
+    </div>
+  </div>
 </template>
 
 <script>

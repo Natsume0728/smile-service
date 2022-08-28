@@ -38,7 +38,7 @@
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="refresh">查询</el-button>
               <el-button @click="reset">重置</el-button>
-              <el-button type="primary" @click="add">新增商户订单商品</el-button>
+              <el-button type="primary" @click="openDraw('add')">新增商户订单商品</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -82,11 +82,17 @@
             <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
           </template>
         </el-table-column>
+        <el-table-column label="操作" width="150">
+          <template slot-scope="{ row: { detailId } }">
+            <el-button type="text" @click="openDraw('edit', detailId)">编辑</el-button>
+            <el-button type="text" @click="remove(detailId)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
 
       <div class="pagination-container">
         <el-pagination
-          :current-page="pageIndex"
+          :current-page.sync="pageIndex"
           :page-sizes="[10, 30, 50, 100]"
           :page-size.sync="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
@@ -97,8 +103,9 @@
         </el-pagination>
       </div>
 
-      <el-drawer title="" :visible.sync="drawer" size="80%" :with-header="false">
-        <DrawAdd :id="id" :drawer="drawer" @refresh="refresh" />
+      <el-drawer title="" :visible.sync="drawer" :size="drawerType === 'add' ? '80%' : '50%'" :with-header="false">
+        <DrawAdd v-if="drawerType === 'add'" :id="id" :drawer="drawer" @refresh="refresh" />
+        <DrawEdit v-if="drawerType === 'edit'" :drawer="drawer" :detail-id="detailId" @refresh="refresh" />
       </el-drawer>
     </div>
   </div>
@@ -107,6 +114,7 @@
 <script>
 import request from '@/utils/request'
 import DrawAdd from './DrawAdd.vue'
+import DrawEdit from './DrawEdit.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -114,12 +122,15 @@ export default {
 
   components: {
     DrawAdd,
+    DrawEdit,
   },
   data() {
     return {
+      drawerType: 'add',
+      detailId: null,
+      drawer: false,
       merchantOrderNo: null,
       id: null,
-      drawer: false,
       form: {
         'grantState': undefined,
         'merchantNo': undefined,
@@ -152,6 +163,29 @@ export default {
   },
   methods: {
 
+    async remove(detailId) {
+      this.$confirm('确认删除?', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async() => {
+          const { code } = await request({
+            method: 'GET',
+            url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderDetail/remove',
+            params: { detailId },
+          })
+          if (code === '0000') {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.refresh()
+          }
+        })
+        .catch(err => { console.log(err) })
+    },
+
     async merchantOrderDetail() {
       const { data } = await request({
         method: 'POST',
@@ -175,7 +209,9 @@ export default {
       this.merchantOrderDetail()
     },
 
-    add() {
+    openDraw(drawerType, detailId) {
+      this.drawerType = drawerType
+      this.detailId = detailId
       this.drawer = true
     },
 

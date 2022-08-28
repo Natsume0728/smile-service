@@ -33,7 +33,7 @@
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="refresh">查询</el-button>
               <el-button @click="reset">重置</el-button>
-              <el-button type="primary" @click="openDraw(null, 'add')">新增商品sku</el-button>
+              <el-button type="primary" @click="openDraw('add')">新增商品</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -60,14 +60,14 @@
         <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
         <el-table-column prop="skuName" label="商品名称"></el-table-column>
         <el-table-column prop="skuNo" label="商品sku编号"></el-table-column>
-        <el-table-column label="创建人/更新人">
-          <template slot-scope="{ row: { createUser, updateUser } }">
-            <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
-          </template>
-        </el-table-column>
         <el-table-column label="销售状态">
           <template slot-scope="{ row: { sellState } }">
             <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column label="创建人/更新人">
+          <template slot-scope="{ row: { createUser, updateUser } }">
+            <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
           </template>
         </el-table-column>
         <el-table-column label="时间" width="220">
@@ -78,10 +78,9 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="150">
           <template slot-scope="{ row: { id, sellState } }">
-            <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
-            <el-button type="text" @click="openDraw(id, 'edit')">编辑</el-button>
+            <el-button type="text" @click="openDraw('edit', id)">编辑</el-button>
             <el-button type="text" @click="editSellState(id, sellState === 1 ? 2 : 1)">{{ sellState === 1 ? '下架' : '上架' }}</el-button>
           </template>
         </el-table-column>
@@ -89,7 +88,7 @@
 
       <div class="pagination-container">
         <el-pagination
-          :current-page="pageIndex"
+          :current-page.sync="pageIndex"
           :page-sizes="[10, 30, 50, 100]"
           :page-size.sync="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
@@ -102,9 +101,8 @@
     </div>
     <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
       <div class="form-container">
-        <DrawView v-if="drawerType === 'view'" :id="drawId" />
         <DrawEdit v-if="drawerType === 'edit'" :id="drawId" @refresh="refresh" />
-        <DrawAdd v-if="drawerType === 'add'" @refresh="refresh" />
+        <DrawAdd v-if="drawerType === 'add'" :drawer="drawer" @refresh="refresh" />
       </div>
     </el-drawer>
   </div>
@@ -112,14 +110,12 @@
 
 <script>
 import request from '@/utils/request'
-import DrawView from './DrawView.vue'
 import DrawEdit from './DrawEdit.vue'
 import DrawAdd from './DrawAdd.vue'
 
 export default {
-  name: 'BaseProductManage',
+  name: 'GoodsList',
   components: {
-    DrawView,
     DrawAdd,
     DrawEdit,
   },
@@ -149,9 +145,9 @@ export default {
       this.getGoodsSku()
     },
 
-    openDraw(orderId, drawerType) {
+    openDraw(drawerType, id) {
       this.drawerType = drawerType
-      this.drawId = orderId || undefined
+      this.drawId = id
       this.drawer = true
     },
 

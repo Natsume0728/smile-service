@@ -90,8 +90,8 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   GoodsManager,
-  PurchasingOrder,
   MerchantInfo,
+  PurchasingOrder,
   {
     path: '/permission',
     component: Layout,
