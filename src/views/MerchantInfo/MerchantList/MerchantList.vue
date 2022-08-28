@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form-container">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" label-width="80px" size="mini">
         <el-row :gutter="100">
           <el-col :span="8">
             <el-form-item label="商户别名">
@@ -50,6 +50,7 @@
       <el-table
         :data="tableData"
         style="width: 100%"
+        max-height="550"
         border
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
@@ -178,11 +179,11 @@ export default {
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/page',
         data: {
-          'merchantAlias': this.form.merchantAlias || undefined,
-          'merchantLevel': this.form.merchantLevel || undefined,
-          'merchantName': this.form.merchantName || undefined,
-          'merchantNo': this.form.merchantNo || undefined,
-          'validState': this.form.validState || undefined,
+          merchantAlias: this.form.merchantAlias || undefined,
+          merchantLevel: this.form.merchantLevel || undefined,
+          merchantName: this.form.merchantName || undefined,
+          merchantNo: this.form.merchantNo || undefined,
+          validState: this.form.validState || undefined,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
         }
@@ -208,24 +209,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  min-height: 100vh;
-  background-color: #f3f4f6;
-  padding: 19px 34px 0;
-  .form-container, .table-container {
-    background: #fff;
-  }
-  .form-container {
-    padding: 23px 30px;
-  }
-  .table-container {
-    margin-top: 25px;
-    padding: 30px;
-    .pagination-container {
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
 </style>
 

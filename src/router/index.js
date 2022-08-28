@@ -7,7 +7,6 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import OrderCenter from './modules/OrderCenter'
 import GoodsManager from './modules/GoodsManager'
 import MerchantInfo from './modules/MerchantInfo'
 import PurchasingOrder from './modules/PurchasingOrder'
@@ -93,7 +92,6 @@ export const asyncRoutes = [
   GoodsManager,
   PurchasingOrder,
   MerchantInfo,
-  OrderCenter,
   {
     path: '/permission',
     component: Layout,

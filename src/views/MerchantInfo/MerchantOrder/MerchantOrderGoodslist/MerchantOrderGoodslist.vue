@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form-container">
-      <el-form ref="form" :model="form" label-width="100px">
+      <el-form ref="form" :model="form" label-width="100px" size="mini">
         <el-row :gutter="100">
           <el-col :span="8">
             <el-form-item label="发放状态">
@@ -51,6 +51,7 @@
       <el-table
         :data="tableData"
         style="width: 100%"
+        max-height="550"
         border
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
@@ -196,24 +197,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  min-height: 100vh;
-  background-color: #f3f4f6;
-  padding: 19px 34px 0;
-  .form-container, .table-container {
-    background: #fff;
-  }
-  .form-container {
-    padding: 23px 30px;
-  }
-  .table-container {
-    margin-top: 25px;
-    padding: 30px;
-    .pagination-container {
-      display: flex;
-      justify-content: center;
-    }
-  }
-}
+
 </style>
 
