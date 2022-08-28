@@ -209,12 +209,6 @@ export default {
       this.refresh()
     },
 
-    handleSizeChange() {
-      console.log('handleSizeChange!')
-    },
-    handleCurrentChange() {
-      console.log('handleCurrentChange!')
-    },
   }
 }
 </script>

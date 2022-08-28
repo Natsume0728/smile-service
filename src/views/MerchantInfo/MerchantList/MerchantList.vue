@@ -29,8 +29,8 @@
           <el-col :span="8">
             <el-form-item label="有效状态">
               <el-select v-model="form.validState" placeholder="请输入有效状态">
-                <el-option label="禁用" :value="0"></el-option>
-                <el-option label="启用" :value="1"></el-option>
+                <el-option label="无效" :value="0"></el-option>
+                <el-option label="有效" :value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -55,15 +55,34 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="merchantAlias" label="商户别名"></el-table-column>
-        <el-table-column prop="merchantLevel" label="商户级别"></el-table-column>
-        <el-table-column prop="merchantName" label="商户名称"></el-table-column>
         <el-table-column prop="merchantNo" label="商户编号"></el-table-column>
-        <el-table-column prop="validState" label="有效状态">
-          <template slot-scope="{ row: { validSate } }">
-            {{ validState === 0 ? '禁用' : '启用' }}
+        <el-table-column prop="merchantAlias" label="商户别名"></el-table-column>
+        <el-table-column prop="merchantName" label="商户名称"></el-table-column>
+        <el-table-column prop="merchantLevel" label="商户级别"></el-table-column>
+        <el-table-column prop="merchantNoParent" label="上级商户编号"></el-table-column>
+        <el-table-column prop="address" label="联系地址"></el-table-column>
+        <el-table-column prop="bankAccountName" label="银行账户开户名称"></el-table-column>
+        <el-table-column prop="bankAccountNo" label="银行账号"></el-table-column>
+        <el-table-column prop="bankName" label="开户银行名称"></el-table-column>
+        <el-table-column prop="email" label="联系邮箱" width="150"></el-table-column>
+        <el-table-column prop="phone" label="联系电话" width="110"></el-table-column>
+        <el-table-column label="结算周期">
+          <template slot-scope="{ row: { settlementInterval } }">
+            {{ settlementInterval === 1 ? '月结' : settlementInterval === 2 ? '季结':'--' }}
           </template>
         </el-table-column>
+        <el-table-column label="结算方式">
+          <template slot-scope="{ row: { settlementMode } }">
+            {{ settlementMode === 1 ? '线下结算' :'--' }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="有效状态">
+          <template slot-scope="{ row: { validState } }">
+            {{ validState === 0 ? '无效' : validState === 1 ? '有效':'--' }}
+          </template>
+        </el-table-column>
+
         <el-table-column label="操作" width="180">
           <template slot-scope="{ row: { validState, id } }">
             <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
@@ -104,7 +123,7 @@ import DrawAdd from './DrawAdd.vue'
 import DrawEdit from './DrawEdit.vue'
 
 export default {
-  name: 'BaseProductManage', // 基础产品管理
+  name: 'MerchantList',
   components: {
     DrawView,
     DrawAdd,
@@ -116,11 +135,25 @@ export default {
       drawId: null,
       drawer: false,
       form: {
-        merchantAlias: '',
-        merchantLevel: '',
-        merchantName: '',
-        merchantNo: '',
-        validState: '',
+        address: undefined,
+        bankAccountName: undefined,
+        bankAccountNo: undefined,
+        bankName: undefined,
+        createTime: undefined,
+        createUser: undefined,
+        email: undefined,
+        id: undefined,
+        merchantAlias: undefined,
+        merchantLevel: undefined,
+        merchantName: undefined,
+        merchantNo: undefined,
+        merchantNoParent: undefined,
+        phone: undefined,
+        settlementInterval: undefined,
+        settlementMode: undefined,
+        updateTime: undefined,
+        updateUser: undefined,
+        validState: undefined,
       },
       tableData: [],
       total: 0,
@@ -179,11 +212,11 @@ export default {
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/page',
         data: {
-          merchantAlias: this.form.merchantAlias || undefined,
-          merchantLevel: this.form.merchantLevel || undefined,
-          merchantName: this.form.merchantName || undefined,
-          merchantNo: this.form.merchantNo || undefined,
-          validState: this.form.validState || undefined,
+          merchantAlias: this.form.merchantAlias ?? undefined,
+          merchantLevel: this.form.merchantLevel ?? undefined,
+          merchantName: this.form.merchantName ?? undefined,
+          merchantNo: this.form.merchantNo ?? undefined,
+          validState: this.form.validState ?? undefined,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
         }

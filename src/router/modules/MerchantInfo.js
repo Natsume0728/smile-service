@@ -16,13 +16,13 @@ const MerchantInfoRouter = {
       path: 'MerchantList',
       component: () => import('@/views/MerchantInfo/MerchantList/MerchantList'),
       name: 'MerchantList',
-      meta: { title: '商户信息', noCache: true }
+      meta: { title: '商户列表', noCache: true }
     },
     {
       path: 'MerchantOrder',
       component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrder'),
       name: 'MerchantOrder',
-      meta: { title: '商户订单', noCache: true },
+      meta: { title: '商户订单列表', noCache: true },
     },
     {
       path: 'MerchantOrderGoodslist',

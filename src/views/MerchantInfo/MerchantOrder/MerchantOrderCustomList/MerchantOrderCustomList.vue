@@ -103,7 +103,7 @@
         <el-pagination
           :current-page="pageIndex"
           :page-sizes="[10, 30, 50, 100]"
-          :page-size="pageSize"
+          :page-size.sync="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
           @size-change="refresh"
@@ -215,11 +215,11 @@ export default {
           merchantOrderNo: this.merchantOrderNo,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
-          grantState: this.form.grantState || undefined,
-          phone: this.form.phone || undefined,
-          policyNo: this.form.policyNo || undefined,
-          receiveState: this.form.receiveState || undefined,
-          uniqueCode: this.form.uniqueCode || undefined,
+          grantState: this.form.grantState ?? undefined,
+          phone: this.form.phone ?? undefined,
+          policyNo: this.form.policyNo ?? undefined,
+          receiveState: this.form.receiveState ?? undefined,
+          uniqueCode: this.form.uniqueCode ?? undefined,
         },
       })
 

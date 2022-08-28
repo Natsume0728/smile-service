@@ -91,11 +91,11 @@
         <el-pagination
           :current-page="pageIndex"
           :page-sizes="[10, 30, 50, 100]"
-          :page-size="pageSize"
+          :page-size.sync="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @size-change="refresh"
+          @current-change="refresh"
         >
         </el-pagination>
       </div>
@@ -170,13 +170,6 @@ export default {
       this.getPurchaseOrder()
     },
 
-    handleSizeChange() {
-      console.log('handleSizeChange!')
-    },
-    handleCurrentChange() {
-      console.log('handleCurrentChange!')
-    },
-
     add() {
       this.drawerType = 'add'
       this.drawer = true
@@ -219,10 +212,10 @@ export default {
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseOrder/page',
         data: {
-          'operationSign': this.form.operationSign || undefined,
-          'orderState': this.form.orderState || undefined,
-          'purchaseNo': this.form.purchaseNo || undefined,
-          'supplierNo': this.form.supplierNo || undefined,
+          operationSign: this.form.operationSign ?? undefined,
+          orderState: this.form.orderState ?? undefined,
+          purchaseNo: this.form.purchaseNo ?? undefined,
+          supplierNo: this.form.supplierNo ?? undefined,
           pageIndex: this.pageIndex,
           pageSize: this.pageSize,
         }
@@ -230,7 +223,6 @@ export default {
       const { list, total } = data
       this.tableData = list
       this.total = total
-      console.log('list', list)
     },
 
     reset() {

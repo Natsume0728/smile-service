@@ -101,11 +101,11 @@
         <el-pagination
           :current-page="form.pageIndex"
           :page-sizes="[10, 30, 50, 100]"
-          :page-size="form.pageSize"
+          :page-size.sync="form.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="form.total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
+          @size-change="refresh"
+          @current-change="refresh"
         >
         </el-pagination>
       </div>
@@ -247,10 +247,10 @@ export default {
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/page',
         data: {
-          'grantState': this.form.grantState || undefined,
-          'merchantNo': this.form.merchantNo || undefined,
-          'merchantOrderNo': this.form.merchantOrderNo || undefined,
-          'orderState': this.form.orderState || undefined,
+          'grantState': this.form.grantState ?? undefined,
+          'merchantNo': this.form.merchantNo ?? undefined,
+          'merchantOrderNo': this.form.merchantOrderNo ?? undefined,
+          'orderState': this.form.orderState ?? undefined,
           pageIndex: this.form.pageIndex,
           pageSize: this.form.pageSize,
         }
@@ -259,9 +259,7 @@ export default {
       this.tableData = list
       this.form.total = total
     },
-    search() {
-      console.log('search!')
-    },
+
     reset() {
       this.form = {
         pageIndex: 1,
@@ -270,12 +268,7 @@ export default {
       }
       this.merchantOrder()
     },
-    handleSizeChange() {
-      console.log('handleSizeChange!')
-    },
-    handleCurrentChange() {
-      console.log('handleCurrentChange!')
-    },
+
   },
 }
 </script>

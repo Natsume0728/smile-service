@@ -93,7 +93,7 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="结算周期:">
-          <div>{{ form.settlementInterval === 1 ? '月结' : '季结' }}</div>
+          <div>{{ form.settlementInterval === 1 ? '月结' :form.settlementInterval === 2 ? '季结' : '--' }}</div>
         </el-form-item>
       </el-col>
     </el-row>
@@ -117,7 +117,7 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="是否有效:">
-          <div>{{ form.validSate === 0 ? '无效' : '有效' }}</div>
+          <div>{{ form.validSate === 0 ? '无效' : form.validSate === 1 ? '有效' : '--' }}</div>
         </el-form-item>
       </el-col>
     </el-row>

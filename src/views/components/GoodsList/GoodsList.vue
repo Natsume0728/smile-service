@@ -33,7 +33,7 @@
             <el-form-item>
               <el-button type="primary" icon="el-icon-search" @click="refresh">查询</el-button>
               <el-button @click="reset">重置</el-button>
-              <el-button type="primary" @click="openDraw(id, 'add')">新增商品sku</el-button>
+              <el-button type="primary" @click="openDraw(null, 'add')">新增商品sku</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -91,7 +91,7 @@
         <el-pagination
           :current-page="pageIndex"
           :page-sizes="[10, 30, 50, 100]"
-          :page-size="pageSize"
+          :page-size.sync="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
           @size-change="refresh"
@@ -168,7 +168,6 @@ export default {
     },
 
     async getGoodsSku() {
-      console.log('this.form', this.form)
       const { data } = await request({
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',

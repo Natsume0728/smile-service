@@ -88,7 +88,7 @@
         <el-pagination
           :current-page="pageIndex"
           :page-sizes="[10, 30, 50, 100]"
-          :page-size="pageSize"
+          :page-size.sync="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
           @size-change="refresh"

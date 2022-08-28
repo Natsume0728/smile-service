@@ -179,7 +179,6 @@ export default {
     handleSelectionChange(val) {
       this.selectedGoods = val
       const selectedIds = val.map(el => el.id)
-      console.log('selectedIds', selectedIds)
       this.tableData.forEach(item => {
         item.edit = selectedIds.includes(item.id)
       })
@@ -194,7 +193,6 @@ export default {
     },
 
     async getGoodsSku() {
-      console.log('this.form', this.form)
       const { data } = await request({
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
