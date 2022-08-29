@@ -56,7 +56,6 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="id" label="商户订单id"></el-table-column>
         <el-table-column prop="merchantNo" label="商户编号"></el-table-column>
         <el-table-column prop="merchantOrderNo" label="商户订单编号" width="170"></el-table-column>
         <el-table-column prop="grantState" label="发放状态">
@@ -67,18 +66,30 @@
         <el-table-column prop="auditRemark" label="审核意见"></el-table-column>
         <el-table-column prop="grantNum" label="订单权益发放份数"></el-table-column>
         <el-table-column prop="grantNumActual" label="实际权益发放份数"></el-table-column>
-        <el-table-column prop="grantTimeActual" label="权益发放实际时间"></el-table-column>
-        <el-table-column prop="grantTimeBegin" label="权益发放时间" width="170"></el-table-column>
+        <el-table-column prop="grantTimeActual" label="权益发放实际时间" width="160">
+          <template slot="header">
+            <div>权益发放时间</div>
+            <div>权益发放实际时间</div>
+          </template>
+          <template slot-scope="{ row: { grantTimeBegin, grantTimeActual } }">
+            <div>{{ grantTimeBegin || '--' }}</div>
+            <div>{{ grantTimeActual || '--' }}</div>
+          </template>
+        </el-table-column>
         <el-table-column prop="receiveTimeLimit" label="权益发放后领取截止时间限制(空无限制)" width="170"></el-table-column>
         <el-table-column prop="orderState" label="订单状态">
           <template slot-scope="{ row: { orderState } }">
             <div>{{ orderState | orderStateFilter }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="时间" width="220">
+        <el-table-column label="时间" width="160">
+          <template slot="header">
+            <div>创建时间</div>
+            <div>更新时间</div>
+          </template>
           <template slot-scope="{ row: { createTime, updateTime } }">
-            <div>创建时间: {{ createTime || '--' }}</div>
-            <div>更新时间: {{ updateTime || '--' }}</div>
+            <div>{{ createTime || '--' }}</div>
+            <div>{{ updateTime || '--' }}</div>
           </template>
         </el-table-column>
         <el-table-column label="创建人/更新人" width="110">
@@ -86,13 +97,17 @@
             <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="320">
-          <template slot-scope="{ row: { id, merchantOrderNo } }">
-            <el-button type="text" @click="jumpCustomList(id, merchantOrderNo)">查看商户订单消费者</el-button>
-            <el-button type="text" @click="jumpGoodsList(id, merchantOrderNo)">查看商户订单商品</el-button>
-            <el-button type="text" @click="submit(id)">提交审核</el-button>
-            <el-button type="text" @click="openDialog(id)">审核</el-button>
-            <el-button type="text" @click="cancel(id)">取消订单</el-button>
+        <el-table-column label="操作" width="170">
+          <template slot-scope="{ row: { id, merchantOrderNo, orderState } }">
+            <div>
+              <el-button type="text" @click="jumpCustomList(id, merchantOrderNo)">查看消费者</el-button>
+              <el-button type="text" @click="jumpGoodsList(id, merchantOrderNo)">查看商品</el-button>
+            </div>
+            <div>
+              <el-button v-if="orderState === 0" type="text" @click="submit(id)">提交审核</el-button>
+              <el-button v-if="orderState === 1" type="text" @click="openDialog(id)">审核</el-button>
+              <el-button type="text" @click="cancel(id)">取消订单</el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -120,7 +135,7 @@
 
       <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
         <div class="form-container">
-          <DrawAdd v-if="drawerType === 'add'" @refresh="refresh" />
+          <DrawAdd v-if="drawerType === 'add'" :drawer="drawer" @refresh="refresh" />
         </div>
       </el-drawer>
     </div>
@@ -135,6 +150,7 @@ export default {
   name: 'MerchantOrder',
   filters: {
     orderStateFilter(value) {
+      if (value === 0) return '待提交'
       if (value === 1) return '待审核'
       if (value === 2) return '已取消'
       if (value === 3) return '审核不通过'
