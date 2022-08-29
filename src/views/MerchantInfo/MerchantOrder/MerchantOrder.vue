@@ -27,6 +27,7 @@
           <el-col :span="8">
             <el-form-item label="订单状态">
               <el-select v-model="form.orderState" placeholder="请输入订单状态">
+                <el-option label="待提交" value="0"></el-option>
                 <el-option label="待审核" value="1"></el-option>
                 <el-option label="已取消" value="2"></el-option>
                 <el-option label="审核不通过" value="3"></el-option>
