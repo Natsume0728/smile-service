@@ -8,8 +8,8 @@
       <el-date-picker
         v-model="form.grantTimeBegin"
         type="datetime"
-        format="yyyy-MM-dd hh:mm:ss"
-        value-format="yyyy-MM-dd hh:mm:ss"
+        format="yyyy-MM-dd HH:mm:ss"
+        value-format="yyyy-MM-dd HH:mm:ss"
         placeholder="选择权益发放时间"
       >
       </el-date-picker>
@@ -74,7 +74,13 @@ export default {
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/add',
         data: this.form,
       })
-      if (code === '0000') this.$emit('refresh')
+      if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+        this.$emit('refresh')
+      }
     },
   }
 }

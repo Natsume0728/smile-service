@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="form-container">
-      <el-form :model="form" label-width="100px" style="padding: 30px;">
+      <el-form :model="form" label-width="110px" style="padding: 30px;">
         <h3>新增商户订单消费用户</h3>
         <el-form-item label="车牌号:">
           <el-input v-model="form.carNo" placeholder="请输入车牌号"></el-input>

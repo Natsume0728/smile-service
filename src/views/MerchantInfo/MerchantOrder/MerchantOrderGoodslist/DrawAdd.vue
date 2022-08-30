@@ -45,15 +45,6 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="id" label="商品id"></el-table-column>
-        <el-table-column prop="skuName" label="商品名称"></el-table-column>
-        <el-table-column prop="appDetailUrl" label="对客展示详情链接"></el-table-column>
-        <el-table-column prop="appSkuDescription" label="对客展示简单描述"></el-table-column>
-        <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
-        <el-table-column prop="categoryNo" label="商品品类编号"></el-table-column>
-        <el-table-column prop="categoryName" label="商品品类名称"></el-table-column>
-        <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
-        <el-table-column prop="skuNo" label="商品编号"></el-table-column>
         <el-table-column label="领取后兑换时间限制" width="155">
           <template slot-scope="{ row }">
             <el-input-number v-if="row.edit" v-model="row.exchangeLimit" controls-position="right" placeholder="请输入" size="mini"></el-input-number>
@@ -82,6 +73,14 @@
             <div v-else>--</div>
           </template>
         </el-table-column>
+        <el-table-column prop="skuName" label="商品名称"></el-table-column>
+        <el-table-column prop="appDetailUrl" label="对客展示详情链接"></el-table-column>
+        <el-table-column prop="appSkuDescription" label="对客展示简单描述"></el-table-column>
+        <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
+        <el-table-column prop="categoryNo" label="商品品类编号"></el-table-column>
+        <el-table-column prop="categoryName" label="商品品类名称"></el-table-column>
+        <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
+        <el-table-column prop="skuNo" label="商品编号"></el-table-column>
       </el-table>
 
       <div class="pagination-container">

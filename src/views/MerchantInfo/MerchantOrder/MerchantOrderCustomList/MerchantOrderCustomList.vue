@@ -42,10 +42,18 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item>
+          <el-col :span="1">
+            <el-form-item label-width="auto">
               <el-button type="primary" icon="el-icon-search" @click="refresh">查询</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="1">
+            <el-form-item label-width="auto">
               <el-button @click="reset">重置</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="1">
+            <el-form-item label-width="auto">
               <el-button type="primary" @click="add">新增商户订单消费用户</el-button>
             </el-form-item>
           </el-col>

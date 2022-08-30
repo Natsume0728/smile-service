@@ -35,10 +35,18 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="16">
-            <el-form-item>
+          <el-col :span="1">
+            <el-form-item label-width="auto">
               <el-button type="primary" icon="el-icon-search" @click="merchantOrder">查询</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="1">
+            <el-form-item label-width="auto">
               <el-button @click="reset">重置</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :span="1">
+            <el-form-item label-width="auto">
               <el-button type="primary" @click="add">新增商户订单</el-button>
             </el-form-item>
           </el-col>
@@ -107,7 +115,7 @@
             <div>
               <el-button v-if="orderState === 0" type="text" @click="submit(id)">提交审核</el-button>
               <el-button v-if="orderState === 1" type="text" @click="openDialog(id)">审核</el-button>
-              <el-button type="text" @click="cancel(id)">取消订单</el-button>
+              <el-button v-if="orderState !== 2" type="text" @click="cancel(id)">取消订单</el-button>
             </div>
           </template>
         </el-table-column>
@@ -181,6 +189,11 @@ export default {
       tableData: [],
     }
   },
+  watch: {
+    dialogVisible(v) {
+      if (v) this.auditForm.auditRemark = undefined
+    },
+  },
   mounted() {
     this.merchantOrder()
   },
@@ -211,25 +224,37 @@ export default {
     },
 
     async submit(orderId) {
-      const { data } = await request({
-        method: 'post',
+      const { code } = await request({
+        method: 'get',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/submit',
-        data: {
+        params: {
           orderId,
         }
       })
-      this.merchantOrder()
+      if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '已提交'
+        })
+        this.merchantOrder()
+      }
     },
 
     async cancel(orderId) {
-      const { data } = await request({
-        method: 'post',
+      const { code } = await request({
+        method: 'get',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/cancel',
-        data: {
+        params: {
           orderId,
         }
       })
-      this.merchantOrder()
+      if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '已取消'
+        })
+        this.merchantOrder()
+      }
     },
 
     openDialog(id) {
@@ -238,7 +263,7 @@ export default {
     },
 
     async audit(auditState) {
-      const { data } = await request({
+      const { code } = await request({
         method: 'post',
         url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/audit',
         data: {
@@ -247,7 +272,15 @@ export default {
           auditState,
         }
       })
-      this.merchantOrder()
+      if (code === '0000') {
+        this.dialogVisible = false
+        this.$message({
+          type: 'success',
+          message: '审核完成'
+        })
+        this.merchantOrder()
+      }
+      this.auditForm.auditRemark = undefined
     },
 
     async merchantOrder() {
