@@ -171,7 +171,7 @@ export default {
     async getOrder(id) {
       const { data } = await request({
         method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseOrder/get',
+        url: '/manage-api/purchaseOrder/get',
         params: { id },
       })
       this.form2 = Object.assign(this.form2, data)
@@ -180,7 +180,7 @@ export default {
     async getList() {
       const { data } = await request({
         method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseDetail/list',
+        url: '/manage-api/purchaseDetail/list',
         params: { purchaseNo: this.form2.purchaseNo },
       })
       this.tableData = data

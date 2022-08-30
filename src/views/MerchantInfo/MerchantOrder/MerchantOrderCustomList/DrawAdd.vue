@@ -67,7 +67,7 @@ export default {
     async addMerchantOrderConsumer() {
       const { code } = await request({
         method: 'POST',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderConsumer/add',
+        url: '/manage-api/merchantOrderConsumer/add',
         data: {
           carNo: this.form.carNo || undefined,
           phone: this.form.phone || undefined,

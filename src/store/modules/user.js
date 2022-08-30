@@ -39,10 +39,9 @@ const mutations = {
 const enumDictAll = async(commit) => {
   const { data } = await request({
     method: 'GET',
-    url: 'https://dev.defenderfintech.com/smile-api/manage-api/manage/common/enumDictAll',
+    url: '/manage-api/manage/common/enumDictAll',
   })
   commit('SET_manageCommonEnumDictAll', data)
-  console.log('enumDictAll', data)
 }
 
 const actions = {

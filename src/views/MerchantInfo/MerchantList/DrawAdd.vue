@@ -153,7 +153,7 @@ export default {
     async add() {
       const { code } = await request({
         method: 'POST',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/add',
+        url: '/manage-api/merchant/add',
         data: this.form,
       })
       if (code === '0000') {

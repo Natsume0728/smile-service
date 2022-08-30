@@ -1,17 +1,18 @@
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 import store from '@/store'
-const TokenKey = 'Admin-Token'
+// const TokenKey = 'Admin-Token'
 
 export function getToken() {
   // return Cookies.get(TokenKey)
-  console.log('store', store?.state?.user?.token)
-  return store?.state?.user?.token
+  return store?.getters?.token
 }
 
 export function setToken(token) {
-  return Cookies.set(TokenKey, token)
+  return store?.commit('user/SET_TOKEN', token)
+  // return Cookies.set(TokenKey, token)
 }
 
 export function removeToken() {
-  return Cookies.remove(TokenKey)
+  return store?.commit('user/SET_TOKEN', null)
+  // return Cookies.remove(TokenKey)
 }

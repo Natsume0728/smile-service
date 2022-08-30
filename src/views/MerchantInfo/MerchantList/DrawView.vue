@@ -180,7 +180,7 @@ export default {
     async getMerchant(merchantId) {
       const { data } = await request({
         method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/get',
+        url: '/manage-api/merchant/get',
         params: { merchantId },
       })
       this.form = Object.assign(this.form, data)

@@ -155,7 +155,7 @@ export default {
       })
       const { code } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseOrder/add',
+        url: '/manage-api/purchaseOrder/add',
         data: {
           detailList,
           'supplierNO': this.form3.supplierNO,
@@ -181,7 +181,7 @@ export default {
     async getGoodsSku() {
       const { data } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
+        url: '/manage-api/goodsSku/page',
         data: {
           sellState: 1,
           skuNo: this.form.skuNo || undefined,

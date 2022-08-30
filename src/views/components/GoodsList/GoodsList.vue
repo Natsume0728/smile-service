@@ -162,7 +162,7 @@ export default {
     async editSellState(skuId, state) {
       const { code } = await request({
         method: 'get',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/editSellState',
+        url: '/manage-api/goodsSku/editSellState',
         params: {
           skuId,
           state,
@@ -174,7 +174,7 @@ export default {
     async getGoodsSku() {
       const { data } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/page',
+        url: '/manage-api/goodsSku/page',
         data: {
           sellState: this.form.sellState || undefined,
           skuNo: this.form.skuNo || undefined,

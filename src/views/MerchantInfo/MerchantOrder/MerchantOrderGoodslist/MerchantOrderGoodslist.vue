@@ -180,7 +180,7 @@ export default {
         .then(async() => {
           const { code } = await request({
             method: 'GET',
-            url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderDetail/remove',
+            url: '/manage-api/merchantOrderDetail/remove',
             params: { detailId },
           })
           if (code === '0000') {
@@ -197,7 +197,7 @@ export default {
     async merchantOrderDetail() {
       const { data } = await request({
         method: 'POST',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderDetail/page',
+        url: '/manage-api/merchantOrderDetail/page',
         data: {
           'grantMode': undefined,
           'merchantOrderNo': this.merchantOrderNo,

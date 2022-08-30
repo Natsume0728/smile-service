@@ -226,7 +226,7 @@ export default {
     async submit(orderId) {
       const { code } = await request({
         method: 'get',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/submit',
+        url: '/manage-api/merchantOrder/submit',
         params: {
           orderId,
         }
@@ -243,7 +243,7 @@ export default {
     async cancel(orderId) {
       const { code } = await request({
         method: 'get',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/cancel',
+        url: '/manage-api/merchantOrder/cancel',
         params: {
           orderId,
         }
@@ -265,7 +265,7 @@ export default {
     async audit(auditState) {
       const { code } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/audit',
+        url: '/manage-api/merchantOrder/audit',
         data: {
           orderId: this.auditForm.orderId,
           auditRemark: this.auditForm.auditRemark,
@@ -286,7 +286,7 @@ export default {
     async merchantOrder() {
       const { data } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrder/page',
+        url: '/manage-api/merchantOrder/page',
         data: {
           'grantState': this.form.grantState ?? undefined,
           'merchantNo': this.form.merchantNo ?? undefined,

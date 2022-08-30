@@ -197,7 +197,7 @@ export default {
     async audit(auditState) {
       const { code } = await request({
         method: 'POST',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseOrder/audit',
+        url: '/manage-api/purchaseOrder/audit',
         data: {
           auditRemark: this.auditRemark,
           auditState,
@@ -218,7 +218,7 @@ export default {
     async getPurchaseOrder() {
       const { data } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/purchaseOrder/page',
+        url: '/manage-api/purchaseOrder/page',
         data: {
           operationSign: this.form.operationSign ?? undefined,
           orderState: this.form.orderState ?? undefined,

@@ -100,7 +100,7 @@ export default {
     async edit() {
       const { code } = await request({
         method: 'POST',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderDetail/edit',
+        url: '/manage-api/merchantOrderDetail/edit',
         data: {
           detailId: this.detailId,
           ...this.form,
@@ -114,7 +114,7 @@ export default {
     async merchantOrderDetail(detailId) {
       const { data, code } = await request({
         method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchantOrderDetail/get',
+        url: '/manage-api/merchantOrderDetail/get',
         params: { detailId },
       })
       if (code === '0000') {

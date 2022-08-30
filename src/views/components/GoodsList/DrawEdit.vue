@@ -100,7 +100,7 @@ export default {
     async category() {
       const { code, data } = await request({
         method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/category/each',
+        url: '/manage-api/category/each',
       })
       if (code === '0000') {
         data.forEach(item => {
@@ -121,7 +121,7 @@ export default {
     async getGoodsSku(skuId) {
       const { data } = await request({
         method: 'GET',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/get',
+        url: '/manage-api/goodsSku/get',
         params: { skuId },
       })
       this.form = Object.assign(this.form, data, { skuId: this.id })
@@ -130,7 +130,7 @@ export default {
     async update() {
       const { code } = await request({
         method: 'POST',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/goodsSku/update',
+        url: '/manage-api/goodsSku/update',
         data: this.form,
       })
       if (code === '0000') {

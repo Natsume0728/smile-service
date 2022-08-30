@@ -197,7 +197,7 @@ export default {
     async remove(merchantId) {
       const { data } = await request({
         method: 'get',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/remove',
+        url: '/manage-api/merchant/remove',
         params: {
           merchantId,
         }
@@ -207,7 +207,7 @@ export default {
     async renew(merchantId) {
       const { data } = await request({
         method: 'get',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/renew',
+        url: '/manage-api/merchant/renew',
         params: {
           merchantId,
         }
@@ -218,7 +218,7 @@ export default {
     async getMerchantList() {
       const { data } = await request({
         method: 'post',
-        url: 'https://dev.defenderfintech.com/smile-api/manage-api/merchant/page',
+        url: '/manage-api/merchant/page',
         data: {
           merchantAlias: this.form.merchantAlias ?? undefined,
           merchantLevel: this.form.merchantLevel ?? undefined,
