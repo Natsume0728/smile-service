@@ -134,6 +134,10 @@ export default {
         data: this.form,
       })
       if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '修改完成',
+        })
         this.$emit('refresh')
       }
     },

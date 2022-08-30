@@ -59,15 +59,14 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="id" label="采购单商品id"></el-table-column>
+        <el-table-column prop="skuNo" label="商品编号"></el-table-column>
+        <el-table-column prop="skuName" label="商品名称"></el-table-column>
+        <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
+        <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
         <el-table-column prop="appDetailUrl" label="对客展示详情链接"></el-table-column>
         <el-table-column prop="appSkuDescription" label="对客展示简单描述"></el-table-column>
-        <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
-        <el-table-column prop="categoryName" label="商品品类名称"></el-table-column>
-        <el-table-column prop="categoryNo" label="商品品类编号"></el-table-column>
-        <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
-        <el-table-column prop="skuName" label="商品名称"></el-table-column>
-        <el-table-column prop="skuNo" label="商品sku编号"></el-table-column>
+        <el-table-column prop="categoryNo" label="品类编号"></el-table-column>
+        <el-table-column prop="categoryName" label="品类名称"></el-table-column>
         <el-table-column label="销售状态">
           <template slot-scope="{ row: { sellState } }">
             <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
@@ -86,7 +85,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column label="操作" width="100">
           <template slot-scope="{ row: { id, sellState } }">
             <el-button type="text" @click="openDraw('edit', id)">编辑</el-button>
             <el-button type="text" @click="editSellState(id, sellState === 1 ? 2 : 1)">{{ sellState === 1 ? '下架' : '上架' }}</el-button>
@@ -168,7 +167,13 @@ export default {
           state,
         }
       })
-      if (code === '0000') this.refresh()
+      if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: state === 1 ? '上架成功' : '下架成功'
+        })
+        this.refresh()
+      }
     },
 
     async getGoodsSku() {

@@ -46,7 +46,7 @@
           </el-col>
           <el-col :span="1">
             <el-form-item label-width="auto">
-              <el-button type="primary" @click="openDraw(id, 'add')">新增商户</el-button>
+              <el-button type="primary" @click="openDraw('add')">新增商户</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -93,8 +93,8 @@
 
         <el-table-column label="操作" width="180">
           <template slot-scope="{ row: { validState, id } }">
-            <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
-            <el-button type="text" @click="openDraw(id, 'edit')">编辑</el-button>
+            <el-button type="text" @click="openDraw('view', id)">查看</el-button>
+            <el-button type="text" @click="openDraw('edit', id)">编辑</el-button>
             <el-button v-if="validState === 1" type="text" @click="remove(id)">禁用</el-button>
             <el-button v-if="validState === 0" type="text" @click="renew(id)">启用</el-button>
           </template>
@@ -178,7 +178,7 @@ export default {
       this.getMerchantList()
     },
 
-    openDraw(orderId, drawerType) {
+    openDraw(drawerType, orderId) {
       this.drawerType = drawerType
       this.drawId = orderId || undefined
       this.drawer = true
@@ -187,32 +187,37 @@ export default {
       this.$router.push({ name: 'MerchantAdd' })
     },
 
-    handleView(id, pageType) {
-      this.$router.push({ name: 'MerchantAdd', params: { id, pageType }})
-    },
-    handleEdit(id, pageType) {
-      this.$router.push({ name: 'MerchantAdd', params: { id, pageType }})
-    },
-
     async remove(merchantId) {
-      const { data } = await request({
+      const { code } = await request({
         method: 'get',
         url: '/manage-api/merchant/remove',
         params: {
           merchantId,
         }
       })
-      this.getMerchantList()
+      if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '已禁用',
+        })
+        this.getMerchantList()
+      }
     },
     async renew(merchantId) {
-      const { data } = await request({
+      const { code } = await request({
         method: 'get',
         url: '/manage-api/merchant/renew',
         params: {
           merchantId,
         }
       })
-      this.getMerchantList()
+      if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '已启用',
+        })
+        this.getMerchantList()
+      }
     },
 
     async getMerchantList() {
