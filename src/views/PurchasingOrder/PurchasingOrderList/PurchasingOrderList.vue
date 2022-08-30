@@ -1,13 +1,8 @@
 <template>
   <div class="container">
     <div class="form-container">
-      <el-form ref="form" :model="form" label-width="90px" size="mini">
+      <el-form ref="form" :model="form" label-width="100px" size="mini">
         <el-row :gutter="100">
-          <el-col :span="8">
-            <el-form-item label="运营标记号">
-              <el-input v-model="form.operationSign" placeholder="请输入运营标记号"></el-input>
-            </el-form-item>
-          </el-col>
           <el-col :span="8">
             <el-form-item label="供应商编号">
               <el-input v-model="form.supplierNo" placeholder="请输入供应商编号"></el-input>
@@ -18,19 +13,24 @@
               <el-input v-model="form.purchaseNo" placeholder="请输入采购单编号"></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="8">
+            <el-form-item label="运营标记信息">
+              <el-input v-model="form.operationSign" placeholder="请输入运营标记信息"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
 
         <el-row :gutter="100">
           <el-col :span="8">
-            <el-form-item label="采购单状态">
-              <el-select v-model="form.orderState" placeholder="请输入采购单状态">
-                <el-option label="待提交" :value="1"></el-option>
-                <el-option label="待审核" :value="2"></el-option>
-                <el-option label="取消" :value="3"></el-option>
-                <el-option label="审核不通过" :value="4"></el-option>
-                <el-option label="审核通过" :value="5"></el-option>
-                <el-option label="已到货" :value="6"></el-option>
-                <el-option label="已结单" :value="7"></el-option>
+            <el-form-item label="采购状态">
+              <el-select v-model="form.orderState" placeholder="请输入采购状态">
+                <el-option label="待提交" :value="0"></el-option>
+                <el-option label="待审核" :value="1"></el-option>
+                <el-option label="取消" :value="2"></el-option>
+                <el-option label="审核不通过" :value="3"></el-option>
+                <el-option label="审核通过" :value="4"></el-option>
+                <el-option label="已到货" :value="5"></el-option>
+                <el-option label="已结单" :value="6"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -65,7 +65,7 @@
         :cell-style="{ textAlign: 'center' }"
       >
         <el-table-column prop="supplierNo" label="供应商编号"></el-table-column>
-        <el-table-column prop="purchaseNo" label="采购单编号"></el-table-column>
+        <el-table-column prop="purchaseNo" label="采购单编号" width="120"></el-table-column>
         <el-table-column prop="operationSign" label="运营标记信息"></el-table-column>
         <el-table-column prop="purchaseState" label="采购状态">
           <template slot-scope="{ row: { purchaseState } }">
@@ -87,10 +87,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
-        <el-table-column label="操作" width="180">
-          <template slot-scope="{ row: { id } }">
+        <el-table-column label="操作" width="100">
+          <template slot-scope="{ row: { id, purchaseState } }">
             <el-button type="text" @click="openDraw(id, 'view')">查看</el-button>
-            <el-button type="text" @click="openDialog(id)">审核</el-button>
+            <el-button v-if="purchaseState === 1" type="text" @click="openDialog(id)">审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -138,13 +138,13 @@ export default {
   },
   filters: {
     purchaseStateFilter(value) {
-      if (value === 1) return '待提交'
-      if (value === 2) return '待审核'
-      if (value === 3) return '取消'
-      if (value === 4) return '审核不通过'
-      if (value === 5) return '审核通过'
-      if (value === 6) return '已到货'
-      if (value === 7) return '已结单'
+      if (value === 0) return '待提交'
+      if (value === 1) return '待审核'
+      if (value === 2) return '取消'
+      if (value === 3) return '审核不通过'
+      if (value === 4) return '审核通过'
+      if (value === 5) return '已到货'
+      if (value === 6) return '已结单'
       return '--'
     }
   },
@@ -167,6 +167,13 @@ export default {
       total: 0,
       pageIndex: 1,
       pageSize: 10,
+    }
+  },
+  watch: {
+    dialogVisible(v) {
+      if (!v) {
+        this.auditRemark = null
+      }
     }
   },
   mounted() {
@@ -205,14 +212,13 @@ export default {
         }
       })
       if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '审核成功'
+        })
         this.dialogVisible = false
         this.refresh()
       }
-    },
-
-    handleView(id, pageType) {
-      // this.$router.push({ name: 'PurchasingOrderAdd', params: { id, pageType }})
-
     },
 
     async getPurchaseOrder() {

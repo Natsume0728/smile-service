@@ -72,7 +72,6 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="consumerId" label="订单消费者id"></el-table-column>
         <el-table-column prop="userId" label="系统用户ID"></el-table-column>
         <el-table-column prop="grantState" label="发放状态">
           <template slot-scope="{ row: { grantState } }">
@@ -101,7 +100,6 @@
         </el-table-column>
         <el-table-column label="操作" width="60">
           <template slot-scope="{ row: { consumerId } }">
-            <!-- <el-button type="text" @click="receive(uniqueCode)">领取</el-button> -->
             <el-button type="text" @click="remove(consumerId)">删除</el-button>
           </template>
         </el-table-column>

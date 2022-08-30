@@ -93,9 +93,8 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="detailId" label="采购单商品id"></el-table-column>
         <el-table-column prop="purchaserNo" label="采购单号" width="120"></el-table-column>
-        <el-table-column prop="skuNo" label="商品sku编号" width="110"></el-table-column>
+        <el-table-column prop="skuNo" label="商品编号" width="110"></el-table-column>
         <el-table-column prop="costPrice" label="商品成本价格"></el-table-column>
         <el-table-column prop="price" label="商品价格"></el-table-column>
         <el-table-column prop="skuNum" label="商品数量"></el-table-column>

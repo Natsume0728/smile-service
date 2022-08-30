@@ -59,7 +59,7 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="skuNo" label="商品编号"></el-table-column>
+        <el-table-column prop="skuNo" label="商品编号" width="110"></el-table-column>
         <el-table-column prop="skuName" label="商品名称"></el-table-column>
         <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
         <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
@@ -72,7 +72,7 @@
             <div>{{ sellState === 1 ? '上架' : '下架' }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="创建人/更新人">
+        <el-table-column label="创建人/更新人" width="110">
           <template slot-scope="{ row: { createUser, updateUser } }">
             <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
           </template>

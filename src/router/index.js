@@ -7,9 +7,6 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import GoodsManager from './modules/GoodsManager'
-import MerchantInfo from './modules/MerchantInfo'
-import PurchasingOrder from './modules/PurchasingOrder'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -78,7 +75,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -89,9 +86,85 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  GoodsManager,
-  MerchantInfo,
-  PurchasingOrder,
+  {
+    path: '/GoodsManager',
+    alwaysShow: true,
+    component: Layout,
+    redirect: '/GoodsManager/GoodsList',
+    name: 'GoodsManager',
+    meta: {
+      title: '商品管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'GoodsList',
+        component: () => import('@/views/GoodsManager/GoodsList/GoodsList'),
+        name: 'GoodsList',
+        meta: { title: '商品列表', icon: 'dashboard', noCache: true }
+      },
+    ]
+  },
+
+  {
+    path: '/MerchantInfo',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: 'MerchantInfo',
+    meta: {
+      title: '商户管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'MerchantList',
+        component: () => import('@/views/MerchantInfo/MerchantList/MerchantList'),
+        name: 'MerchantList',
+        meta: { title: '商户列表', icon: 'dashboard', noCache: true }
+      },
+      {
+        path: 'MerchantOrder',
+        component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrder'),
+        name: 'MerchantOrder',
+        meta: { title: '商户订单列表', icon: 'dashboard', noCache: true },
+      },
+      {
+        path: 'MerchantOrderGoodslist',
+        component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderGoodslist/MerchantOrderGoodslist'),
+        name: 'MerchantOrderGoodslist',
+        meta: { title: '商户订单商品列表', breadcrumb: false, activeMenu: '/MerchantInfo/MerchantOrder', noCache: true },
+        hidden: true,
+      },
+      {
+        path: 'MerchantOrderCustomList',
+        component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderCustomList/MerchantOrderCustomList'),
+        name: 'MerchantOrderCustomList',
+        meta: { title: '商户订单消费者列表', breadcrumb: false, activeMenu: '/MerchantInfo/MerchantOrder', noCache: true },
+        hidden: true,
+      },
+    ]
+  },
+
+  {
+    path: '/PurchasingOrder',
+    alwaysShow: true,
+    component: Layout,
+    redirect: '/PurchasingOrder/PurchasingOrderList',
+    name: 'PurchasingOrder',
+    meta: {
+      title: '采购单管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'PurchasingOrderList',
+        component: () => import('@/views/PurchasingOrder/PurchasingOrderList/PurchasingOrderList'),
+        name: 'PurchasingOrderList',
+        meta: { title: '采购单列表', icon: 'dashboard', noCache: true }
+      },
+    ]
+  },
+
   {
     path: '/permission',
     component: Layout,

@@ -107,6 +107,10 @@ export default {
         },
       })
       if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '修改成功',
+        })
         this.$emit('refresh')
       }
     },

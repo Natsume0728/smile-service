@@ -47,7 +47,7 @@
           </el-col>
           <el-col :span="1">
             <el-form-item label-width="auto">
-              <el-button type="primary" @click="add">新增商户订单</el-button>
+              <el-button type="primary" @click="add">新增订单</el-button>
             </el-form-item>
           </el-col>
         </el-row>

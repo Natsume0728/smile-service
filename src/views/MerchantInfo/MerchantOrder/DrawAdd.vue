@@ -18,8 +18,8 @@
       <el-date-picker
         v-model="form.receiveTimeLimit"
         type="datetime"
-        format="yyyy-MM-dd hh:mm:ss"
-        value-format="yyyy-MM-dd hh:mm:ss"
+        format="yyyy-MM-dd HH:mm:ss"
+        value-format="yyyy-MM-dd HH:mm:ss"
         placeholder="选择领取截止时间"
       >
       </el-date-picker>

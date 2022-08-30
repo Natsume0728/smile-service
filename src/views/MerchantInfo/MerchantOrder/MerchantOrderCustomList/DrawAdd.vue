@@ -76,7 +76,13 @@ export default {
         },
       })
 
-      if (code === '0000') this.$emit('refresh')
+      if (code === '0000') {
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+        this.$emit('refresh')
+      }
     },
   },
 }

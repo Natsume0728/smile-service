@@ -3,34 +3,24 @@
     <div class="form-container">
       <el-form ref="form" :model="form" label-width="100px" size="mini">
         <el-row :gutter="100">
-          <el-col :span="8">
-            <el-form-item label="发放状态">
-              <el-select v-model="form.grantState" placeholder="请输入发放状态">
-                <el-option label="未发放" value="0"></el-option>
-                <el-option label="已发放" value="1"></el-option>
-              </el-select>
+          <el-col :span="12">
+            <el-form-item label="订单编号">
+              <el-input v-model="form.merchantOrderNo" placeholder="请输入订单编号"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="商户编号">
-              <el-input v-model="form.merchantNo" placeholder="请输入商户编号"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="商户订单编号">
-              <el-input v-model="form.merchantOrderNo" placeholder="请输入商户订单编号"></el-input>
+          <el-col :span="12">
+            <el-form-item label="订单商品编号">
+              <el-input v-model="form.skuNo" placeholder="请输入订单商品编号"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="100">
-          <el-col :span="8">
-            <el-form-item label="订单状态">
-              <el-select v-model="form.orderState" placeholder="请输入订单状态">
-                <el-option label="待审核" value="1"></el-option>
-                <el-option label="已取消" value="2"></el-option>
-                <el-option label="审核不通过" value="3"></el-option>
-                <el-option label="审核通过" value="4"></el-option>
+          <el-col :span="12">
+            <el-form-item label="发放形式">
+              <el-select v-model="form.grantMode" placeholder="请选择发放形式">
+                <el-option label="一次性发放" :value="1"></el-option>
+                <el-option label="每月度发放" :value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -46,7 +36,7 @@
           </el-col>
           <el-col :span="1">
             <el-form-item label-width="auto">
-              <el-button type="primary" @click="openDraw('add')">新增商户订单商品</el-button>
+              <el-button type="primary" @click="openDraw('add')">新增订单商品</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -64,12 +54,11 @@
         :header-cell-style="{ background: '#f9f9f9', textAlign: 'center' }"
         :cell-style="{ textAlign: 'center' }"
       >
-        <el-table-column prop="detailId" label="商户订单明细id"></el-table-column>
-        <el-table-column prop="merchantOrderNo" label="商户订单编号"></el-table-column>
-        <el-table-column prop="skuNo" label="商户订单商品sku编号"></el-table-column>
+        <el-table-column prop="merchantOrderNo" label="订单编号" width="170"></el-table-column>
+        <el-table-column prop="skuNo" label="订单商品编号"></el-table-column>
         <el-table-column prop="skuNum" label="商品数量(每人)"></el-table-column>
         <el-table-column prop="exchangeLimit" label="领取后兑换时间限制"></el-table-column>
-        <el-table-column prop="exchangeLimitUnit" label="领取后兑换时间限制单位" width="180">
+        <el-table-column prop="exchangeLimitUnit" label="领取后兑换时间限制单位">
           <template slot-scope="{ row: { exchangeLimitUnit } }">
             <div>{{ exchangeLimitUnit === 1 ? '日' : exchangeLimitUnit === 2 ? '月' : exchangeLimitUnit === 3 ? '年' : '--' }}</div>
           </template>
@@ -90,10 +79,10 @@
             <div>{{ createUser || '--' }}/{{ updateUser || '--' }}</div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="150">
-          <template slot-scope="{ row: { detailId } }">
-            <el-button type="text" @click="openDraw('edit', detailId)">编辑</el-button>
-            <el-button type="text" @click="remove(detailId)">删除</el-button>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="{ row }">
+            <el-button type="text" @click="openDraw('edit', row.detailId)">编辑</el-button>
+            <el-button type="text" @click="remove(row.detailId)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -140,10 +129,8 @@ export default {
       merchantOrderNo: null,
       id: null,
       form: {
-        'grantState': undefined,
-        'merchantNo': undefined,
-        'merchantOrderNo': undefined,
-        'orderState': undefined,
+        grantMode: undefined,
+        skuNo: undefined,
       },
       'pageSize': 10,
       'pageIndex': 1,
@@ -199,11 +186,11 @@ export default {
         method: 'POST',
         url: '/manage-api/merchantOrderDetail/page',
         data: {
-          'grantMode': undefined,
+          'grantMode': this.form.grantMode || undefined,
+          skuNo: this.form.skuNo || undefined,
           'merchantOrderNo': this.merchantOrderNo,
           'pageIndex': this.pageIndex,
           'pageSize': this.pageSize,
-          'skuNo': undefined,
         },
       })
 
@@ -225,10 +212,8 @@ export default {
 
     reset() {
       this.form = {
-        'grantState': undefined,
-        'merchantNo': undefined,
-        'merchantOrderNo': undefined,
-        'orderState': undefined,
+        grantMode: undefined,
+        skuNo: undefined,
         'pageIndex': 1,
         'pageSize': 10,
         total: 0,

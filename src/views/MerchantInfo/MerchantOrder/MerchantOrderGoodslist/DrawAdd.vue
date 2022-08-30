@@ -73,14 +73,14 @@
             <div v-else>--</div>
           </template>
         </el-table-column>
+        <el-table-column prop="skuNo" label="商品编号"></el-table-column>
         <el-table-column prop="skuName" label="商品名称"></el-table-column>
+        <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
         <el-table-column prop="appDetailUrl" label="对客展示详情链接"></el-table-column>
         <el-table-column prop="appSkuDescription" label="对客展示简单描述"></el-table-column>
-        <el-table-column prop="appSkuName" label="对客展示名称"></el-table-column>
-        <el-table-column prop="categoryNo" label="商品品类编号"></el-table-column>
-        <el-table-column prop="categoryName" label="商品品类名称"></el-table-column>
+        <el-table-column prop="categoryNo" label="品类编号"></el-table-column>
+        <el-table-column prop="categoryName" label="品类名称"></el-table-column>
         <el-table-column prop="skuDesc" label="商品描述"></el-table-column>
-        <el-table-column prop="skuNo" label="商品编号"></el-table-column>
       </el-table>
 
       <div class="pagination-container">
