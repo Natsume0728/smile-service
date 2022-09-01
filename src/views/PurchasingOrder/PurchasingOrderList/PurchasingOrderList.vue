@@ -26,7 +26,7 @@
               <el-select v-model="form.orderState" placeholder="请输入采购状态">
                 <el-option label="待提交" :value="0"></el-option>
                 <el-option label="待审核" :value="1"></el-option>
-                <el-option label="取消" :value="2"></el-option>
+                <el-option label="已取消" :value="2"></el-option>
                 <el-option label="审核不通过" :value="3"></el-option>
                 <el-option label="审核通过" :value="4"></el-option>
                 <el-option label="已到货" :value="5"></el-option>
@@ -140,7 +140,7 @@ export default {
     purchaseStateFilter(value) {
       if (value === 0) return '待提交'
       if (value === 1) return '待审核'
-      if (value === 2) return '取消'
+      if (value === 2) return '已取消'
       if (value === 3) return '审核不通过'
       if (value === 4) return '审核通过'
       if (value === 5) return '已到货'

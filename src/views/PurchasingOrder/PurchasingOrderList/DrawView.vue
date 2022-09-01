@@ -122,13 +122,13 @@ import request from '@/utils/request'
 export default {
   filters: {
     purchaseStateFilter(value) {
-      if (value === 1) return '待提交'
-      if (value === 2) return '待审核'
-      if (value === 3) return '取消'
-      if (value === 4) return '审核不通过'
-      if (value === 5) return '审核通过'
-      if (value === 6) return '已到货'
-      if (value === 7) return '已结单'
+      if (value === 0) return '待提交'
+      if (value === 1) return '待审核'
+      if (value === 2) return '已取消'
+      if (value === 3) return '审核不通过'
+      if (value === 4) return '审核通过'
+      if (value === 5) return '已到货'
+      if (value === 6) return '已结单'
       return '--'
     }
   },
