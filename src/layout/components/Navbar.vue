@@ -6,11 +6,7 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-
-        <error-log class="errLog-container right-menu-item hover-effect" />
-
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -35,14 +31,12 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger,
-    ErrorLog,
     Screenfull,
   },
   computed: {
