@@ -67,6 +67,16 @@
         <el-table-column prop="appSkuDescription" label="对客展示简单描述"></el-table-column>
         <el-table-column prop="categoryNo" label="品类编号"></el-table-column>
         <el-table-column prop="categoryName" label="品类名称"></el-table-column>
+        <el-table-column prop="fullAmount" label="使用门槛">
+          <template slot-scope="{ row: { fullAmount, reduceAmount } }">
+            <div>满{{ fullAmount|| '--' }}减{{ reduceAmount || '--' }}</div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="periodLimit" label="有效期限制">
+          <template slot-scope="{ row: { periodLimit, periodLimitUnit } }">
+            <div>{{ periodLimit|| '--' }} {{ periodLimitUnit || '--' }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="销售状态">
           <template slot-scope="{ row: { sellState } }">
             <div>{{ sellState === 1 ? '上架' : '下架' }}</div>

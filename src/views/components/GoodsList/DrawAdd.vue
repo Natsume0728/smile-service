@@ -26,6 +26,26 @@
       ></el-cascader>
     </el-form-item>
 
+    <el-form-item label="使用门槛金额:" prop="fullAmount">
+      <el-input-number v-model="form.fullAmount" controls-position="right" :min="0" @change="handleChange"></el-input-number>
+    </el-form-item>
+
+    <el-form-item label="满减金额:" prop="reduceAmount">
+      <el-input-number v-model="form.reduceAmount" controls-position="right" :min="0" @change="handleChange"></el-input-number>
+    </el-form-item>
+
+    <el-form-item label="商品有效期限制:" prop="periodLimit">
+      <el-input-number v-model="form.periodLimit" controls-position="right" :min="0" @change="handleChange"></el-input-number>
+    </el-form-item>
+
+    <el-form-item label="商品有效期限制单位:" prop="periodLimitUnit">
+      <el-select v-model="form.periodLimitUnit" placeholder="请选择商品有效期限制单位">
+        <el-option label="天" :value="1"></el-option>
+        <el-option label="月" :value="2"></el-option>
+        <el-option label="年" :value="3"></el-option>
+      </el-select>
+    </el-form-item>
+
     <el-form-item label="">
       <el-button type="primary" @click="add">新增</el-button>
       <el-button @click="cancel">取消</el-button>
@@ -36,23 +56,13 @@
 
 <script>
 import request from '@/utils/request'
+import myMixin from './mixin'
 
 export default {
-  props: {
-    drawer: {
-      type: Boolean,
-    }
-  },
+  mixins: [myMixin],
 
   data() {
     return {
-      rules: {
-        appDetailUrl: [{ required: true, message: '请输入对客展示详情链接', trigger: 'blur' }],
-        appSkuDescription: [{ required: true, message: '请输入对客展示简单描述', trigger: 'blur' }],
-        appSkuName: [{ required: true, message: '请输入对客展示名称', trigger: 'blur' }],
-        categoryNo: [{ required: true, message: '请选择商品品类', trigger: 'blur' }],
-        skuName: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-      },
       form: {
         appDetailUrl: undefined,
         appSkuDescription: undefined,
@@ -60,8 +70,11 @@ export default {
         categoryName: undefined,
         categoryNo: undefined,
         skuName: undefined,
+        periodLimit: undefined,
+        periodLimitUnit: undefined,
+        fullAmount: undefined,
+        reduceAmount: undefined,
       },
-      options: [],
     }
   },
 
@@ -75,41 +88,16 @@ export default {
           categoryName: undefined,
           categoryNo: undefined,
           skuName: undefined,
+          periodLimit: undefined,
+          periodLimitUnit: undefined,
+          fullAmount: undefined,
+          reduceAmount: undefined,
         }
       }
     }
   },
 
-  mounted() {
-    this.category()
-  },
-
   methods: {
-    handleChange(v) {
-      this.form.categoryName = this.$refs.cascader.getCheckedNodes()[0].label
-    },
-
-    async category() {
-      const { code, data } = await request({
-        method: 'GET',
-        url: '/manage-api/category/each',
-      })
-      if (code === '0000') {
-        data.forEach(item => {
-          if (item?.children?.length === 0) {
-            delete item.children
-          } else {
-            item.children.forEach(el => {
-              if (el?.children?.length === 0) {
-                delete el.children
-              }
-            })
-          }
-        })
-        this.options = data
-      }
-    },
-
     async add() {
       const { code } = await request({
         method: 'POST',
@@ -125,13 +113,6 @@ export default {
       }
     },
 
-    cancel() {
-      this.$emit('refresh')
-    },
   }
 }
 </script>
-
-<style>
-
-</style>
