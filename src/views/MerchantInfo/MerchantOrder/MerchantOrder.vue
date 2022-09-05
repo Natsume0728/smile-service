@@ -140,7 +140,7 @@
       <el-drawer title="" :visible.sync="drawer" size="80%" :with-header="false">
         <div class="form-container">
           <DrawAdd v-if="drawerType === 'add'" :drawer="drawer" @refresh="refresh" />
-          <DrawView v-if="drawerType === 'view'" :drawer="drawer" :orderId="drawId" :merchantOrderNo="drawMerchantOrderNo" @refresh="refresh" />
+          <DrawView v-if="drawerType === 'view'" :drawer="drawer" :order-id="drawId" :merchant-order-no="drawMerchantOrderNo" @refresh="refresh" />
         </div>
       </el-drawer>
     </div>

@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -31,7 +31,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            placeholder="Password"
+            placeholder="密码"
             name="password"
             tabindex="2"
             autocomplete="on"
@@ -47,7 +47,7 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin"> 登录 </el-button>
 
-      <div style="position:relative">
+      <!-- <div style="position:relative">
         <div class="tips">
           <span>Username : admin</span>
           <span>Password : 123456</span>
@@ -56,7 +56,7 @@
           <span style="margin-right:18px;">Username : m001</span>
           <span>Password : 123456</span>
         </div>
-      </div>
+      </div> -->
     </el-form>
 
     <!-- <slide-verify ref="slideblock" :slider-text="text" :accuracy="accuracy" @again="onAgain" @fulfilled="onFulfilled" @success="onSuccess" @fail="onFail" @refresh="onRefresh"></slide-verify>
@@ -66,37 +66,21 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
       msg: '',
       text: '向右滑动->',
       // 精确度小，可允许的误差范围小；为1时，则表示滑块要与凹槽完全重叠，才能验证成功。默认值为5
       accuracy: 5,
       loginForm: {
-        username: 'admin',
-        password: '123456'
+        username: '',
+        password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
       },
       passwordType: 'password',
       capsTooltip: false,
