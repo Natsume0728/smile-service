@@ -5,6 +5,7 @@ import md5 from 'md5'
 import request from '@/utils/request'
 
 const state = {
+  permissionList: [],
   token: getToken(),
   name: '',
   avatar: '',
@@ -14,6 +15,9 @@ const state = {
 }
 
 const mutations = {
+  SET_permissionList: (state, permissionList) => {
+    state.permissionList = permissionList
+  },
   SET_TOKEN: (state, token) => {
     state.token = token
   },
@@ -50,7 +54,10 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: md5(password) }).then(response => {
-        const { token } = response
+        console.log('response', response)
+        const { token, data } = response
+        const permissionList = data.permissionList.map(el => el.permPath)
+        commit('SET_permissionList', permissionList)
         commit('SET_TOKEN', token)
         // setToken(data.token)
         enumDictAll(commit)

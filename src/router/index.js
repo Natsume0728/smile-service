@@ -94,14 +94,18 @@ export const asyncRoutes = [
     name: 'GoodsManager',
     meta: {
       title: '商品管理',
-      icon: 'chart'
+      icon: 'chart',
+      permType: 1, permPath: '/GoodsManager', permName: '标准商品管理'
     },
     children: [
       {
         path: 'GoodsList',
         component: () => import('@/views/GoodsManager/GoodsList/GoodsList'),
         name: 'GoodsList',
-        meta: { title: '商品列表', icon: 'dashboard', noCache: true }
+        meta: {
+          title: '商品列表', icon: 'dashboard', noCache: true,
+          permType: 1, permPath: '/GoodsManager/GoodsList', permName: '标准商品列表'
+        }
       },
     ]
   },
@@ -113,32 +117,37 @@ export const asyncRoutes = [
     name: 'MerchantInfo',
     meta: {
       title: '商户管理',
-      icon: 'chart'
+      icon: 'chart',
+      permType: 1, permPath: '/MerchantManager', permName: '商户管理'
     },
     children: [
       {
         path: 'MerchantList',
         component: () => import('@/views/MerchantInfo/MerchantList/MerchantList'),
         name: 'MerchantList',
-        meta: { title: '商户列表', icon: 'dashboard', noCache: true }
+        meta: { title: '商户列表', icon: 'dashboard', noCache: true,
+          permType: 1, permPath: '/MerchantManager/MerchantList', permName: '商户列表' }
       },
       {
         path: 'MerchantOrder',
         component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrder'),
         name: 'MerchantOrder',
-        meta: { title: '商户订单列表', icon: 'dashboard', noCache: true },
+        meta: { title: '商户订单列表', icon: 'dashboard', noCache: true,
+          permType: 1, permPath: '/MerchantManager/MerchantOrder', permName: '商户订单列表' },
       },
       {
         path: 'MerchantOrderGoodslist',
         component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderGoodslist/MerchantOrderGoodslist'),
         name: 'MerchantOrderGoodslist',
-        meta: { title: '商户订单商品列表', icon: 'dashboard', noCache: true },
+        meta: { title: '商户订单商品列表', icon: 'dashboard', noCache: true,
+          permType: 1, permPath: '/MerchantInfo/MerchantOrderGoodslist', permName: '商户订单商品明细列表' },
       },
       {
         path: 'MerchantOrderCustomList',
         component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderCustomList/MerchantOrderCustomList'),
         name: 'MerchantOrderCustomList',
-        meta: { title: '商户订单消费者列表', icon: 'dashboard', noCache: true },
+        meta: { title: '商户订单消费者列表', icon: 'dashboard', noCache: true,
+          permType: 1, permPath: '/MerchantInfo/MerchantOrderCustomList', permName: '商户订单消费者列表' },
       },
     ]
   },
@@ -152,14 +161,16 @@ export const asyncRoutes = [
     meta: {
       title: '采购单管理',
       icon: 'chart',
-      roles: ['editor']
+      roles: ['editor'],
+      permType: 1, permPath: '/PurchasingOrder', permName: '采购单管理'
     },
     children: [
       {
         path: 'PurchasingOrderList',
         component: () => import('@/views/PurchasingOrder/PurchasingOrderList/PurchasingOrderList'),
         name: 'PurchasingOrderList',
-        meta: { title: '采购单列表', icon: 'dashboard', noCache: true, roles: ['editor'] }
+        meta: { title: '采购单列表', icon: 'dashboard', noCache: true, roles: ['editor'],
+          permType: 1, permPath: '/PurchasingOrder/PurchasingOrderList', permName: '采购单列表' }
       },
     ]
   },
