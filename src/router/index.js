@@ -132,15 +132,13 @@ export const asyncRoutes = [
         path: 'MerchantOrderGoodslist',
         component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderGoodslist/MerchantOrderGoodslist'),
         name: 'MerchantOrderGoodslist',
-        meta: { title: '商户订单商品列表', breadcrumb: false, activeMenu: '/MerchantInfo/MerchantOrder', noCache: true },
-        hidden: true,
+        meta: { title: '商户订单商品列表', icon: 'dashboard', noCache: true },
       },
       {
         path: 'MerchantOrderCustomList',
         component: () => import('@/views/MerchantInfo/MerchantOrder/MerchantOrderCustomList/MerchantOrderCustomList'),
         name: 'MerchantOrderCustomList',
-        meta: { title: '商户订单消费者列表', breadcrumb: false, activeMenu: '/MerchantInfo/MerchantOrder', noCache: true },
-        hidden: true,
+        meta: { title: '商户订单消费者列表', icon: 'dashboard', noCache: true },
       },
     ]
   },
@@ -153,14 +151,15 @@ export const asyncRoutes = [
     name: 'PurchasingOrder',
     meta: {
       title: '采购单管理',
-      icon: 'chart'
+      icon: 'chart',
+      roles: ['editor']
     },
     children: [
       {
         path: 'PurchasingOrderList',
         component: () => import('@/views/PurchasingOrder/PurchasingOrderList/PurchasingOrderList'),
         name: 'PurchasingOrderList',
-        meta: { title: '采购单列表', icon: 'dashboard', noCache: true }
+        meta: { title: '采购单列表', icon: 'dashboard', noCache: true, roles: ['editor'] }
       },
     ]
   },

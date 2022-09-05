@@ -107,16 +107,11 @@
           </template>
         </el-table-column>
         <el-table-column label="操作" width="170">
-          <template slot-scope="{ row: { id, merchantOrderNo, orderState } }">
-            <div>
-              <el-button type="text" @click="jumpCustomList(id, merchantOrderNo)">查看消费者</el-button>
-              <el-button type="text" @click="jumpGoodsList(id, merchantOrderNo)">查看商品</el-button>
-            </div>
-            <div>
-              <el-button v-if="orderState === 0" type="text" @click="submit(id)">提交审核</el-button>
-              <el-button v-if="orderState === 1" type="text" @click="openDialog(id)">审核</el-button>
-              <el-button v-if="orderState !== 2" type="text" @click="cancel(id)">取消订单</el-button>
-            </div>
+          <template slot-scope="{ row: { id, orderState, merchantOrderNo } }">
+            <el-button type="text" @click="toView(id, merchantOrderNo)">查看</el-button>
+            <el-button v-if="orderState === 0" type="text" @click="submit(id, consumerId, merchantOrderNo)">提交审核</el-button>
+            <el-button v-if="orderState === 1" type="text" @click="openDialog(id)">审核</el-button>
+            <el-button v-if="orderState !== 2" type="text" @click="cancel(id)">取消订单</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -142,9 +137,10 @@
         </span>
       </el-dialog>
 
-      <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
+      <el-drawer title="" :visible.sync="drawer" size="80%" :with-header="false">
         <div class="form-container">
           <DrawAdd v-if="drawerType === 'add'" :drawer="drawer" @refresh="refresh" />
+          <DrawView v-if="drawerType === 'view'" :drawer="drawer" :orderId="drawId" :merchantOrderNo="drawMerchantOrderNo" @refresh="refresh" />
         </div>
       </el-drawer>
     </div>
@@ -154,6 +150,7 @@
 <script>
 import request from '@/utils/request'
 import DrawAdd from './DrawAdd.vue'
+import DrawView from './DrawView.vue'
 
 export default {
   name: 'MerchantOrder',
@@ -169,9 +166,12 @@ export default {
   },
   components: {
     DrawAdd,
+    DrawView,
   },
   data() {
     return {
+      drawMerchantOrderNo: null,
+      drawConsumerId: null,
       drawId: null,
       drawerType: 'add',
       drawer: false,
@@ -198,17 +198,16 @@ export default {
     this.merchantOrder()
   },
   methods: {
-    jumpCustomList(id, merchantOrderNo) {
-      this.$router.push({ name: 'MerchantOrderCustomList', params: { id, merchantOrderNo }})
-    },
-
-    jumpGoodsList(id, merchantOrderNo) {
-      this.$router.push({ name: 'MerchantOrderGoodslist', params: { id, merchantOrderNo }})
-    },
-
     refresh() {
       this.drawer = false
       this.merchantOrder()
+    },
+
+    toView(id, merchantOrderNo) {
+      this.drawerType = 'view'
+      this.drawId = id
+      this.drawMerchantOrderNo = merchantOrderNo
+      this.drawer = true
     },
 
     add() {

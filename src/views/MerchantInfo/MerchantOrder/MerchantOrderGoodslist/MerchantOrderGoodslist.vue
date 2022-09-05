@@ -34,11 +34,6 @@
               <el-button @click="reset">重置</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="1">
-            <el-form-item label-width="auto">
-              <el-button type="primary" @click="openDraw('add')">新增订单商品</el-button>
-            </el-form-item>
-          </el-col>
         </el-row>
 
       </el-form>
@@ -101,7 +96,6 @@
       </div>
 
       <el-drawer title="" :visible.sync="drawer" :size="drawerType === 'add' ? '80%' : '50%'" :with-header="false">
-        <DrawAdd v-if="drawerType === 'add'" :id="id" :drawer="drawer" @refresh="refresh" />
         <DrawEdit v-if="drawerType === 'edit'" :drawer="drawer" :detail-id="detailId" @refresh="refresh" />
       </el-drawer>
     </div>
@@ -110,7 +104,6 @@
 
 <script>
 import request from '@/utils/request'
-import DrawAdd from './DrawAdd.vue'
 import DrawEdit from './DrawEdit.vue'
 import { mapGetters } from 'vuex'
 
@@ -118,7 +111,6 @@ export default {
   name: 'MerchantOrderGoodslist',
 
   components: {
-    DrawAdd,
     DrawEdit,
   },
   data() {

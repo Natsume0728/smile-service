@@ -52,11 +52,6 @@
               <el-button @click="reset">重置</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="1">
-            <el-form-item label-width="auto">
-              <el-button type="primary" @click="add">新增商户订单消费用户</el-button>
-            </el-form-item>
-          </el-col>
         </el-row>
 
       </el-form>
@@ -118,24 +113,16 @@
         </el-pagination>
       </div>
 
-      <el-drawer title="" :visible.sync="drawer" size="40%" :with-header="false">
-        <DrawAdd :id="id" :drawer="drawer" @refresh="refresh" />
-      </el-drawer>
     </div>
   </div>
 </template>
 
 <script>
 import request from '@/utils/request'
-import DrawAdd from './DrawAdd.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'MerchantOrderCustomList',
-
-  components: {
-    DrawAdd,
-  },
 
   data() {
     return {
