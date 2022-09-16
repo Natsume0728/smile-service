@@ -61,7 +61,7 @@
       <h3>新增商户订单商品信息</h3>
       <el-button type="primary" style="margin-bottom: 10px" size="mini" @click="dialogVisible = true">选择商品</el-button>
       <el-table
-        :data="[...tableData, ...tableData,...tableData]"
+        :data="tableData"
         style="width: 100%"
         max-height="300"
         border

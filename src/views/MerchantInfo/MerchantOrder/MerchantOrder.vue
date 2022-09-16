@@ -131,8 +131,8 @@
       <el-dialog title="审核" :visible.sync="dialogVisible" width="30%">
         审核意见:<el-input v-model="auditForm.auditRemark" placeholder="请输入审核意见"></el-input>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="audit(4)">审核通过</el-button>
-          <el-button type="primary" @click="audit(3)">审核不通过</el-button>
+          <el-button type="primary" @click="audit(1)">审核通过</el-button>
+          <el-button type="primary" @click="audit(2)">审核不通过</el-button>
           <el-button @click="dialogVisible = false">取 消</el-button>
         </span>
       </el-dialog>

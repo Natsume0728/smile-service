@@ -46,22 +46,8 @@
       </el-tooltip>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin"> 登录 </el-button>
-
-      <!-- <div style="position:relative">
-        <div class="tips">
-          <span>Username : admin</span>
-          <span>Password : 123456</span>
-        </div>
-        <div class="tips">
-          <span style="margin-right:18px;">Username : m001</span>
-          <span>Password : 123456</span>
-        </div>
-      </div> -->
     </el-form>
 
-    <!-- <slide-verify ref="slideblock" :slider-text="text" :accuracy="accuracy" @again="onAgain" @fulfilled="onFulfilled" @success="onSuccess" @fail="onFail" @refresh="onRefresh"></slide-verify>
-    <button @click="handleClick">在父组件可以点我刷新哦</button>
-    <div>{{ msg }}</div> -->
   </div>
 </template>
 
@@ -70,10 +56,6 @@ export default {
   name: 'Login',
   data() {
     return {
-      msg: '',
-      text: '向右滑动->',
-      // 精确度小，可允许的误差范围小；为1时，则表示滑块要与凹槽完全重叠，才能验证成功。默认值为5
-      accuracy: 5,
       loginForm: {
         username: '',
         password: ''
@@ -112,9 +94,6 @@ export default {
   },
 
   methods: {
-    handleClick() {
-      this.$refs.slideblock.reset()
-    },
 
     checkCapslock(e) {
       const { key } = e

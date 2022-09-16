@@ -54,7 +54,6 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: md5(password) }).then(response => {
-        console.log('response', response)
         const { token, data } = response
         const permissionList = data.permissionList.map(el => el.permPath)
         commit('SET_permissionList', permissionList)
