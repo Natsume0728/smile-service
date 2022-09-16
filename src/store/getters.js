@@ -9,9 +9,9 @@ const getters = {
   avatar: state => state.user.avatar,
   manageCommonEnumDictAll: state => state.user.manageCommonEnumDictAll,
   name: state => state.user.name,
-  introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,
+  hasGenerateRoutes: state => state.permission.hasGenerateRoutes,
   errorLogs: state => state.errorLog.logs
 }
 export default getters

@@ -31,14 +31,19 @@ export function filterAsyncRoutes(routes, permissionList) {
 
 const state = {
   routes: [],
-  addRoutes: []
+  addRoutes: [],
+  hasGenerateRoutes: false,
 }
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes
     state.routes = constantRoutes.concat(routes)
-  }
+  },
+
+  SET_hasGenerateRoutes: (state, flag) => {
+    state.hasGenerateRoutes = flag
+  },
 }
 
 const actions = {
@@ -47,6 +52,7 @@ const actions = {
       const permissionList = rootGetters.permissionList
       const accessedRoutes = filterAsyncRoutes(asyncRoutes, permissionList) || []
       commit('SET_ROUTES', accessedRoutes)
+      commit('SET_hasGenerateRoutes', true)
       resolve(accessedRoutes)
     })
   }
